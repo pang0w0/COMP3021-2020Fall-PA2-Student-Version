@@ -2,11 +2,12 @@
 
 In PA2, you will implement a GUI version of the game in PA1. The core logic of the game remains the same.
 
+**Reminder: Please ask questions using "Issues" on this github repository in case other students have same questions.**
 
 
 ## Changes from PA1
 
-- GUI components are to be implemented with JavaFX, meaning that you will need to familiarize yourself with JavaFX classes
+- GUI's components are to be implemented with JavaFX, meaning that you will need to familiarize yourself with JavaFX classes
   and functionality
 - The text version of Jeson Mor is still preserved, a new package `gui` is added under `src/main/java/castle.comp3021.assignment`
     - The entry point to the text game is now `src/main/java/castle.comp3021.assignment/textversion/Main`
@@ -28,7 +29,8 @@ The same as PA1, using the following environments:
 
 ## How to set up
 
-The Javafx 15 sdk for different operation systems are provided (`javafx-sdk-15-linux`, `javafx-sdk-15-osx`, `javafx-sdk-15-win-x64`, `javafx-sdk-15-win-x86`). 
+The Javafx 15 sdk for different operation systems have been provided (`javafx-sdk-15-linux`, `javafx-sdk-15-osx`, `javafx-sdk-15-win-x64`, `javafx-sdk-15-win-x86`). 
+You can remove sdks for other operation systems.
 
 ### Add Javafx SDK to library
 
@@ -44,7 +46,13 @@ The Javafx 15 sdk for different operation systems are provided (`javafx-sdk-15-l
 
 \* *You can remove javafx sdks for other systems.*
 
-Note: Also add `./lib` to Libraries if it is not automatically configured.
+Note: 
+
+- Add `./lib` to Libraries if it is not automatically configured.
+
+- After the above configuration, it is normal you **CANNOT** get the project run, because the functions related to show 
+scenes and panes have not been implemented. 
+
 
 
 ## How it works
@@ -57,7 +65,7 @@ The GUI version of Jeson Mor is expected to provide three **main** functions in 
 
 #### A. Customized Game Configuration
 
-Before entering the game, a customized setting should be provided. You can also use default setting for configuration.
+Before entering the game, a customized setting should be provided. You can also use default setting for the configuration.
 
 ![add-javafx-library](./img/gamePane.png)
 
@@ -69,7 +77,7 @@ After setting up the configuration of game, clicking "Play" button will go to th
 
 ![add-javafx-library](./img/gamePlayPane1.png)
 
-The configuration is the same as what you set in previous pane. 
+The configuration is the same as what you set in the previous pane. 
 
 
 
@@ -412,10 +420,13 @@ Usage: (**NOTE: Change the javafx sdk path** according to your operation system!
 Or using text version:
 
 ```
-java -jar artifacts/PA2_obfuscated.jar --text size numMovesProtection
+java --module-path ./javafx-sdk-15-osx/lib --add-modules javafx.controls,javafx.media, -jar artifacts/PA2_obfuscated.jar --text 9 1
+ --text 9 1
 ```
 
-The two arguments for text version is the same as PA1.
+where 9 represents board size, 1 stands for the number of protection steps. The two arguments for text version is the same as PA1.
+
+
 
 
 
@@ -447,6 +458,7 @@ Your submission is a zip file including:
 
 
 You need to submit your zip file in [CASS](https://cssystem.cse.ust.hk/UGuides/cass/index.html) (not CANVAS).
+As well as push on your github repository before DDL!
 
 The deadline of assignment 1 is **`7 Nov. 2020, 23:55`**. 
 
@@ -454,7 +466,7 @@ The deadline of assignment 1 is **`7 Nov. 2020, 23:55`**.
 
 ### GUI demonstration
 
-Every student will be asked to reserve a **5 min slot for GUI demonstration** on zoom with TAs.
+Every student will be asked to reserve a **10 - 15 minutes slot for GUI demonstration** on zoom with TAs.
 
 
 
