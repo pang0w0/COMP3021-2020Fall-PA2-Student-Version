@@ -233,7 +233,6 @@ public class GameUnitTests {
         var player2 = new MockPlayer();
         var piece1 = new MockPiece(player1);
         var config = new Configuration(5, new Player[]{player1, player2}, 5);
-        config.validateConfiguration();
         config.addInitialPiece(piece1, 3, 2);
         config.addInitialPiece(new MockPiece(player2), 2, 1);
         var game = new JesonMor(config);

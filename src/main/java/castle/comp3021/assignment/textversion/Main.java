@@ -32,11 +32,6 @@ public class Main {
     public static Game createGame(int size, int numMovesProtection) {
         Configuration configuration =
                 new Configuration(size, new Player[]{whitePlayer, blackPlayer}, numMovesProtection);
-        try {
-            configuration.validateConfiguration();
-        } catch (InvalidConfigurationError e){
-            throw e;
-        }
 
         for (int i = 0; i < size; i++) {
             if (i % 2 == 0) {

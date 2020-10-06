@@ -31,7 +31,6 @@ public class FirstNMovesProtection {
     @UnitTest
     public void testNoProtection() {
         var config = new Configuration(3, new Player[]{player1, player2}, 0);
-        config.validateConfiguration();
         config.addInitialPiece(knight1, 0, 0);
         config.addInitialPiece(knight2, 2, 1);
         var game = new JesonMor(config);
@@ -42,7 +41,6 @@ public class FirstNMovesProtection {
     @UnitTest
     public void testWithProtection() {
         var config = new Configuration(3, new Player[]{player1, player2}, 5);
-        config.validateConfiguration();
         config.addInitialPiece(knight1, 0, 0);
         config.addInitialPiece(knight2, 2, 1);
         var game = new JesonMor(config);
@@ -53,7 +51,6 @@ public class FirstNMovesProtection {
     @UnitTest
     public void testWithThenWithoutProtection() {
         var config = new Configuration(3, new Player[]{player1, player2}, 5);
-        config.validateConfiguration();
         config.addInitialPiece(knight1, 0, 0);
         config.addInitialPiece(knight2, 2, 1);
         var game = new JesonMor(config);
