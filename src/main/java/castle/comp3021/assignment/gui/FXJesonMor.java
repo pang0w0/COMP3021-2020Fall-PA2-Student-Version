@@ -33,7 +33,8 @@ public class FXJesonMor extends JesonMor {
 
     /**
      * This method can be used in {@link castle.comp3021.assignment.gui.views.panes.GamePlayPane}
-     * Entry of render board and pieces using {@link Renderer#renderChessBoard(Canvas, int, Place)} and {@link Renderer#renderPieces(Canvas, Piece[][])}
+     * Entry of render board and pieces using {@link Renderer#renderChessBoard(Canvas, int, Place)}
+     * and {@link Renderer#renderPieces(Canvas, Piece[][])}
      * @param canvas render the given canvas
      */
     public void renderBoard(@NotNull Canvas canvas){

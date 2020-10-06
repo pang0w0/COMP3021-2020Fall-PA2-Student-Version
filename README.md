@@ -44,6 +44,7 @@ The Javafx 15 sdk for different operation systems are provided (`javafx-sdk-15-l
 
 \* *You can remove javafx sdks for other systems.*
 
+Note: Also add `./lib` to Libraries if it is not automatically configured.
 
 
 ## How it works
@@ -281,7 +282,7 @@ All methods not mentioned in the above list practices concepts already visited i
 
 ***Hint***
 
-*It is recommended to start from `SceneManager` so that you can get the scenes displayed.*
+*It is recommended to start from `SceneManager.java`, `ResourceLoader.java` and `MainMenuPane.java` so that you can get the scenes displayed.*
 
 
 
@@ -402,9 +403,9 @@ In PA1, the computer player adopts a random strategy. For PA2 bonus, you can com
 We provide an obfuscated demo program which implements a GUI version of PA1. 
 The demo program can be found at `artifacts/PA2_obfuscated.jar`.
 
-Usage: 
+Usage: (**NOTE: Change the javafx sdk path** according to your operation system!)
 ```
-java -jar artifacts/PA2_obfuscated.jar
+ java --module-path ./javafx-sdk-15-osx/lib --add-modules javafx.controls,javafx.media,javafx.graphics -jar artifacts/PA2_obfuscated.jar
 ```
 
 

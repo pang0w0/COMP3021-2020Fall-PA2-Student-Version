@@ -1,8 +1,6 @@
 package castle.comp3021.assignment.gui.controllers;
 
-import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.scene.media.MediaException;
 
 import java.util.HashSet;
 import java.util.Set;

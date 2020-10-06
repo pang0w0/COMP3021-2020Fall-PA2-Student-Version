@@ -1,9 +1,6 @@
 package castle.comp3021.assignment.player;
 
-import castle.comp3021.assignment.piece.Knight;
 import castle.comp3021.assignment.protocol.*;
-import javafx.application.Platform;
-import javafx.beans.property.IntegerProperty;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;

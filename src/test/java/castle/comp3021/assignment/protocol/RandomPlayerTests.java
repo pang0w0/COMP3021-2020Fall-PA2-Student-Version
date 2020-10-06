@@ -5,12 +5,10 @@ import castle.comp3021.assignment.mock.MockPiece;
 import castle.comp3021.assignment.mock.MockPlayer;
 import castle.comp3021.assignment.player.RandomPlayer;
 import castle.comp3021.assignment.util.SampleTest;
-import castle.comp3021.assignment.util.UnitTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
-import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

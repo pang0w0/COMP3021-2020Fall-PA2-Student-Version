@@ -31,7 +31,6 @@ public class Knight extends Piece {
 
     @Override
     public Move[] getAvailableMoves(Game game, Place source) {
-        // TODO student implementation
         var moves = new ArrayList<Move>();
         var steps = new int[]{1, -1, 2, -2};
         for (var stepX :

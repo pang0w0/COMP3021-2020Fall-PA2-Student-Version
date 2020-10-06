@@ -14,7 +14,6 @@ public class ArcherMoveRule implements Rule {
         if (!(game.getPiece(move.getSource()) instanceof Archer)) {
             return true;
         }
-        // TODO student implementation
         var source = move.getSource();
         var destination = move.getDestination();
         var isCapturing = false;

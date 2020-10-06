@@ -3,7 +3,6 @@ package castle.comp3021.assignment.protocol;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
-import java.util.StringJoiner;
 
 public class MoveRecord implements Cloneable {
     private Player player;

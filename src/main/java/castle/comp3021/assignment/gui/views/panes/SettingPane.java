@@ -42,12 +42,15 @@ public class SettingPane extends BasePane {
     @NotNull
     private final NumberTextField durationField = new NumberTextField(String.valueOf(DurationTimer.getDefaultEachRound()));
     @NotNull
-    private final BorderPane durationBox = new BorderPane(null, null, durationField, null, new Label("Max Duration (s)"));
+    private final BorderPane durationBox = new BorderPane(null, null, durationField, null,
+            new Label("Max Duration (s)"));
 
     @NotNull
-    private final NumberTextField numMovesProtectionField = new NumberTextField(String.valueOf(globalConfiguration.getNumMovesProtection()));
+    private final NumberTextField numMovesProtectionField =
+            new NumberTextField(String.valueOf(globalConfiguration.getNumMovesProtection()));
     @NotNull
-    private final BorderPane numMovesProtectionBox = new BorderPane(null, null, numMovesProtectionField, null, new Label("Steps of protection"));
+    private final BorderPane numMovesProtectionBox = new BorderPane(null, null,
+            numMovesProtectionField, null, new Label("Steps of protection"));
 
     @NotNull
     private final VBox centerContainer = new BigVBox();

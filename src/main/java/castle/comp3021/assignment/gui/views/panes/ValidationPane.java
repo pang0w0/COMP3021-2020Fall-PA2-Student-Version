@@ -30,7 +30,7 @@ public class ValidationPane extends BasePane{
     @NotNull
     private final Label title = new Label("Jeson Mor");
     @NotNull
-    private final Label Explanation = new Label("Upload and validation the game history.");
+    private final Label explanation = new Label("Upload and validation the game history.");
     @NotNull
     private final Button loadButton = new BigButton("Load file");
     @NotNull

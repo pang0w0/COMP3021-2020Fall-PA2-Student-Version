@@ -3,12 +3,9 @@ package castle.comp3021.assignment.protocol;
 import castle.comp3021.assignment.textversion.JesonMor;
 import castle.comp3021.assignment.mock.MockPiece;
 import castle.comp3021.assignment.mock.MockPlayer;
-import castle.comp3021.assignment.piece.Knight;
 import castle.comp3021.assignment.util.IntegratedTest;
-import castle.comp3021.assignment.util.SampleTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

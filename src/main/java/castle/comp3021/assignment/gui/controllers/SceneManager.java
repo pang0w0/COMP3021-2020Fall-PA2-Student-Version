@@ -6,7 +6,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import castle.comp3021.assignment.gui.views.panes.*;
 //import castle.comp3021.assignment.gui.views.panes.*;
 
 import java.util.Map;
@@ -46,7 +45,7 @@ public class SceneManager {
      * Level editor scene.
      */
     @NotNull
-    private final Scene SettingEditorScene = new Scene(new SettingPane(), ViewConfig.WIDTH, ViewConfig.HEIGHT);
+    private final Scene settingEditorScene = new Scene(new SettingPane(), ViewConfig.WIDTH, ViewConfig.HEIGHT);
     /**
      * Map for fast lookup of {@link BasePane} to their respective {@link Scene}.
      */
@@ -55,7 +54,7 @@ public class SceneManager {
             Map.entry(MainMenuPane.class, mainMenuScene),
             Map.entry(GamePane.class, settingsScene),
             Map.entry(GamePlayPane.class, gameplayScene),
-            Map.entry(SettingPane.class, SettingEditorScene),
+            Map.entry(SettingPane.class, settingEditorScene),
             Map.entry(ValidationPane.class, validationScene)
     );
     /**
