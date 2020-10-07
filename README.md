@@ -146,6 +146,8 @@ On this pane, the default board size, steps of protection and **max duration (op
 ### Function 3. History Record Validation
 
 This function is to validate the record of the game, checking whether the configuration of the game, moves, scores are valid.
+Two template records are provided under `src/main/records`. `template_correct_record.txt` is a correct one, 
+`template_incorrect_record.txt` is an incorrect one with odd board size.
 
 #### A. File Loading
 

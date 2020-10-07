@@ -121,10 +121,10 @@ public class GamePlayPane extends BasePane {
     /**
      * Set up necessary initialization.
      * Hint:
-     *      - Set buttons enability
+     *      - Set buttons enable/disable
      *          - Start button: enable
      *          - restart button: disable
-     *      - This function can be invocked before {@link GamePlayPane#startGame()} for setting up
+     *      - This function can be invoked before {@link GamePlayPane#startGame()} for setting up
      *
      * @param fxJesonMor pass in an instance of {@link FXJesonMor}
      */
@@ -252,7 +252,7 @@ public class GamePlayPane extends BasePane {
 
     /**
      * Update the move to the historyFiled
-     * @param move
+     * @param move the last move that has been made
      */
     private void updateHistoryField(Move move){
         //TODO

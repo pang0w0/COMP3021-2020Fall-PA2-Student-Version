@@ -183,7 +183,7 @@ public class JesonMor extends Game {
     /**
      * Convert necessary records of Jeson Mor to string
      *
-     * Format example can be found at :src/main/java/templateJesonMor.txt
+     * Format example can be found at :src/main/java/records/*.txt
      * Hint:
      * - You may reuse {@link MoveRecord#toString()} and {@link Configuration#toString()}
      *
