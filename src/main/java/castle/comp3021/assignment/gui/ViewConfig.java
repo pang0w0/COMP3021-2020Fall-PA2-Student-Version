@@ -58,8 +58,8 @@ public class ViewConfig {
     @NotNull
     public static final String MSG_UPPERBOUND_SIZE_NUM = "Size of game board is at most 26";
     @NotNull
-    public static final String MSG_NEG_PROT = "Steps of protection should be positive";
+    public static final String MSG_NEG_PROT = "Steps of protection should be greater than or equal to 0.";
     @NotNull
-    public static final String MSG_NEG_DURATION = "Duration of each round should be positive";
+    public static final String MSG_NEG_DURATION = "Duration of each round should be greater than 0.";
 }
 

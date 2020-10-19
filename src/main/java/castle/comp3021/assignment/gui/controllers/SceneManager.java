@@ -102,6 +102,12 @@ public class SceneManager {
      *
      * @param pane New pane to display.
      * @throws IllegalArgumentException If the {@code pane} is not known.
+     * Hint:
+     * showPane works with help of two parts: {@link SceneManager#scenes} and {@link SceneManager#showScene(Scene)}
+     * The logic is: get scene of pane by {@link SceneManager#scenes}
+     *      if the corresponding scene exists, then call showScene to show the corresponding scene.
+     *      else throw IllegalArgumentException
+     *
      */
     public void showPane(@NotNull final Class<? extends BasePane> pane) {
         //TODO
