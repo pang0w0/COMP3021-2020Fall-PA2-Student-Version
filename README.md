@@ -2,7 +2,14 @@
 
 In PA2, you will implement a GUI version of the game in PA1. The core logic of the game remains the same.
 
-**Reminder: Please ask questions using "Issues" on this github repository in case other students have same questions.**
+**Reminder**
+
+- Please ask questions using "Issues" on this github repository in case other students have same questions.
+- Add TAs as cooperators of your private GitHub repository.
+
+    -  arabela_tso@outlook.com
+    -  troublor@live.com
+    
 
 
 ## Changes from PA1
