@@ -58,6 +58,8 @@ public class GameplayInfoPane extends BigVBox {
 
     /**
      * Binds all properties to their respective UI elements.
+     * Hint:
+     *     - You may find it useful to synchronize javafx UI-thread using {@link javafx.application.Platform#runLater}
      *
      * @param score1Property Score of Player 1
      * @param score2Property Score of Player 2
