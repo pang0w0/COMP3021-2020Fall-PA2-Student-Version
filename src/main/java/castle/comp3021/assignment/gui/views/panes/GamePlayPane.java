@@ -37,6 +37,8 @@ import org.jetbrains.annotations.NotNull;
  *      - A countdown timer (if this is implemented, then elapsed timer can be either kept or removed)
  *      - The format of countdown timer is defined in {@link GameplayInfoPane#countdownFormat(int)}
  *      - If one player runs out of time of each round {@link DurationTimer#getDefaultEachRound()}, then the player loses the game.
+ * Hint:
+ *      - You may find it useful to synchronize javafx UI-thread using {@link javafx.application.Platform#runLater}
  */ 
 
 public class GamePlayPane extends BasePane {

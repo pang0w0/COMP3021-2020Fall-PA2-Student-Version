@@ -508,4 +508,4 @@ We will conduct code plagiarism tests on your program, and your grade will be de
 | Bonus Task 2: Automatic player changes | Up to 5%    | Work correctly |
 | Bonus Task 3: Smarter random strategy | Up to 5%    | Make reasonable explanation and work correctly |
 
-Final grade for PA2 = **max**(100, sum of above).
+Final grade for PA2 = **min**(100, sum of above).
