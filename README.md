@@ -407,11 +407,13 @@ Instead of recording time elapsed, implement the **countdown** timer which count
 
 ### Bonus Task 3 - Smarter Random Player
 
-In PA1, the computer player adopts a random strategy. For PA2 bonus, you can come up with a **smarter** strategy for random player. You need to explain your strategy and implement it.
+In PA1, the computer player adopts a random strategy. For PA2 bonus, you should come up with a **smarter** strategy for random player. You need to explain your strategy and implement it.
+
+**[Updated at Oct 23, 2020] Please refer to `Grading specifications of PA2.docx - VI(c)` for details.** 
 
 
 
-*Note: the strategy should involve the random part, which means you **cannot specify** what is every next move.*
+*Note: the smart strategy cannot be hard coded (i.e., specifying each next move).*
 
 
 
