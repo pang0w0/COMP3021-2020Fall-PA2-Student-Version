@@ -74,6 +74,7 @@ public class Renderer {
      */
     public static void renderChessBoard(@NotNull Canvas canvas, int boardSize, Place centerPlace){
         //TODO
+
     }
 
     /**

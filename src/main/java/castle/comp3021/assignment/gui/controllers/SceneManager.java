@@ -67,7 +67,10 @@ public class SceneManager {
      * Add CSS styles to every scene
      */
     private SceneManager() {
-        //TODO
+        //TODO-DOING???
+        //stage.setTitle("MainMenuPane");
+        stage.setScene(mainMenuScene);
+
     }
 
     /**
