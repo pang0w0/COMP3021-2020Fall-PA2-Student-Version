@@ -26,8 +26,7 @@ public class ResourceLoader {
     static {
         // TODO: Initialize RES_PATH-DONE?
         // replace null to the actual path
-        RES_PATH = Paths.get("C:\\Users\\pang\\IdeaProjects\\COMP3021-2020Fall-PA2-Student-Version\\" +
-                "src\\main\\resources\\assets\\");
+        RES_PATH = Paths.get("C:\\Users\\pang\\IdeaProjects\\COMP3021-2020Fall-PA2-Student-Version\\src\\main\\resources");
     }
 
     /**
@@ -41,12 +40,13 @@ public class ResourceLoader {
     public static String getResource(@NotNull final String relativePath){
         // TODO-?????
         try {
-            Paths.get(RES_PATH.toString() + relativePath);
+            Paths.get(RES_PATH.resolve(relativePath).toString());
         } catch (InvalidPathException e){
             throw new ResourceNotFoundException("the file cannot be found under the resource directory");
         }
 
-        return RES_PATH.toString() + relativePath;
+        //System.out.println(RES_PATH.resolve(relativePath).toString());
+        return RES_PATH.resolve(relativePath).toString();
     }
 
     /**

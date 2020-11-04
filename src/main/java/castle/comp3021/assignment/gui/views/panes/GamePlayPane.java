@@ -7,6 +7,7 @@ import castle.comp3021.assignment.gui.views.BigButton;
 import castle.comp3021.assignment.gui.views.BigVBox;
 import castle.comp3021.assignment.gui.views.GameplayInfoPane;
 import castle.comp3021.assignment.gui.views.SideMenuVBox;
+import castle.comp3021.assignment.player.ConsolePlayer;
 import castle.comp3021.assignment.protocol.*;
 import castle.comp3021.assignment.gui.controllers.Renderer;
 import javafx.beans.property.IntegerProperty;
@@ -99,6 +100,32 @@ public class GamePlayPane extends BasePane {
     @Override
     void connectComponents() {
         //TODO
+        String s = "Parameters:"+"\n"+
+                "\n"+
+                "Size of board: "+globalConfiguration.getSize()+"\n"+
+                "Num of protection moves: "+globalConfiguration.getNumMovesProtection()+"\n";
+        if(globalConfiguration.getPlayers()[0] instanceof ConsolePlayer){
+            s += "Player White(human)\n";
+        }else{
+            s += "Player White(computer)\n";
+        }
+
+        if(globalConfiguration.getPlayers()[1] instanceof ConsolePlayer){
+            s += "Player Black(human)\n";
+        }else{
+            s += "Player Black(computer)\n";
+        }
+
+        parameterText.setText(s);
+
+        topBar.setAlignment(Pos.CENTER);
+        topBar.getChildren().add(title);
+        leftContainer.getChildren().addAll(parameterText, historyLabel, scrollPane,
+                startButton, restartButton, returnButton);
+        //centerContainer.getChildren().addAll(gamePlayCanvas, infoPane);
+        setTop(topBar);
+        setLeft(leftContainer);
+        setCenter(centerContainer);
     }
 
     /**

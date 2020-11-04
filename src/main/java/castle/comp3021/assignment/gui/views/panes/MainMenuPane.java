@@ -62,11 +62,25 @@ public class MainMenuPane extends BasePane {
     @Override
     void setCallbacks() {
         //TODO-DOING
-        playButton.setOnAction(e->{SceneManager.getInstance().showPane(GamePane.class);});
-        settingsButton.setOnAction(e->{SceneManager.getInstance().showPane(SettingPane.class);});
-        validationButtion.setOnAction(e->{SceneManager.getInstance().showPane(ValidationPane.class);});
+        playButton.setOnAction(e->{
+            GamePane temp = SceneManager.getInstance().getPane(GamePane.class);
+            temp.fillValues();
+            SceneManager.getInstance().showPane(GamePane.class);
+        });
 
-        //quitButton.setOnAction(e->{}); HOW TO QUIT?
+        settingsButton.setOnAction(e->{
+            SettingPane temp = SceneManager.getInstance().getPane(SettingPane.class);
+
+            SceneManager.getInstance().showPane(SettingPane.class);
+        });
+
+        validationButtion.setOnAction(e->{
+            ValidationPane temp = SceneManager.getInstance().getPane(ValidationPane.class);
+
+            SceneManager.getInstance().showPane(ValidationPane.class);
+        });
+
+        quitButton.setOnAction(e->{Platform.exit();});
     }
 
 }

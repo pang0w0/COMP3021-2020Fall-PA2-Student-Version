@@ -29,6 +29,7 @@ public class FXJesonMor extends JesonMor {
      */
     public FXJesonMor(Configuration configuration){
         //TODO
+        super(configuration);
     }
 
     /**

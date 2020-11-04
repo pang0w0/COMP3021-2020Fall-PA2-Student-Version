@@ -71,6 +71,7 @@ public class SceneManager {
     private SceneManager() {
         //TODO-DONE
         String path = "file:src/main/resources/assets/styles/styles.css";
+        //String path = ViewConfig.CSS_STYLES_PATH;
         mainMenuScene.getStylesheets().add(path);
         settingsScene.getStylesheets().add(path);
         gameplayScene.getStylesheets().add(path);

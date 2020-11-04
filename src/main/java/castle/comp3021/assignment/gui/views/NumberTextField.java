@@ -38,12 +38,15 @@ public class NumberTextField extends TextField {
      */
     private boolean validate(@NotNull String text) {
         //TODO-DONE
-        try{
-            int num = Integer.parseInt(text);
-        }catch (NumberFormatException e){
+//        try{
+//            int num = Integer.parseInt(text);
+//        }catch (NumberFormatException e){
+//            return false;
+//        }
+
+        if (!text.matches("\\d*")) {
             return false;
         }
-
         return true;
     }
 

@@ -73,6 +73,7 @@ public class SettingPane extends BasePane {
     @Override
     void connectComponents() {
         //TODO-DONE
+        fillValues();
         leftContainer.getChildren().addAll(title, sizeBox, numMovesProtectionBox, durationBox,
                 isHumanPlayer1Button, isHumanPlayer2Button, toggleSoundButton, saveButton, returnButton);
         centerContainer.getChildren().add(infoText);
@@ -105,7 +106,7 @@ public class SettingPane extends BasePane {
     void setCallbacks() {
         //TODO
         isHumanPlayer1Button.setOnAction(e->{
-            if (globalConfiguration.isFirstPlayerHuman()){
+            if (isHumanPlayer1Button.getText().equals("Player 1: Player")){
                 isHumanPlayer1Button.setText("Player 1: Computer");
             }else{
                 isHumanPlayer1Button.setText("Player 1: Player");
@@ -113,7 +114,7 @@ public class SettingPane extends BasePane {
         });
 
         isHumanPlayer2Button.setOnAction(e->{
-            if (globalConfiguration.isSecondPlayerHuman()){
+            if (isHumanPlayer2Button.getText().equals("Player 2: Player")){
                 isHumanPlayer2Button.setText("Player 2: Computer");
             }else{
                 isHumanPlayer2Button.setText("Player 2: Player");
@@ -144,15 +145,15 @@ public class SettingPane extends BasePane {
         numMovesProtectionField.setText(""+globalConfiguration.getNumMovesProtection());
 
         if(globalConfiguration.isFirstPlayerHuman()){
-            isHumanPlayer1Button.setText("Player 1: Computer");
-        }else {
             isHumanPlayer1Button.setText("Player 1: Player");
+        }else {
+            isHumanPlayer1Button.setText("Player 1: Computer");
         }
 
         if(globalConfiguration.isSecondPlayerHuman()){
-            isHumanPlayer2Button.setText("Player 2: Computer");
-        }else {
             isHumanPlayer2Button.setText("Player 2: Player");
+        }else {
+            isHumanPlayer2Button.setText("Player 2: Computer");
         }
 
     }

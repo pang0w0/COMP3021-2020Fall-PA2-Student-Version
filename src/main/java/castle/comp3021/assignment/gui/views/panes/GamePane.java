@@ -85,11 +85,34 @@ public class GamePane extends BasePane {
     @Override
     void setCallbacks() {
         //TODO-70%
+        isHumanPlayer1Button.setOnAction(e->{
+            if (globalConfiguration.isFirstPlayerHuman()){
+                isHumanPlayer1Button.setText("Player 1: Computer");
+                globalConfiguration.setFirstPlayerHuman(false);
+            }else{
+                isHumanPlayer1Button.setText("Player 1: Player");
+                globalConfiguration.setFirstPlayerHuman(true);
+            }
+        });
 
-        useDefaultButton.setOnAction(e->{fillValues();});
+        isHumanPlayer2Button.setOnAction(e->{
+            if (globalConfiguration.isSecondPlayerHuman()){
+                isHumanPlayer2Button.setText("Player 2: Computer");
+                globalConfiguration.setSecondPlayerHuman(false);
+            }else{
+                isHumanPlayer2Button.setText("Player 2: Player");
+                globalConfiguration.setSecondPlayerHuman(true);
+            }
+        });
+
+        useDefaultButton.setOnAction(e->{
+            sizeFiled.setText(""+globalConfiguration.getSize());
+            numMovesProtectionField.setText(""+globalConfiguration.getNumMovesProtection());
+        });
 
         playButton.setOnAction(e->{
-
+            fxJesonMor = new FXJesonMor(globalConfiguration);
+            startGame(fxJesonMor);
         });
 
         returnButton.setOnAction(e->{SceneManager.getInstance().showPane(MainMenuPane.class);});
@@ -112,20 +135,31 @@ public class GamePane extends BasePane {
      */
     void fillValues(){
         // TODO-DONE
-        sizeFiled.setText(""+globalConfiguration.getSize());
-        numMovesProtectionField.setText(""+globalConfiguration.getNumMovesProtection());
-
         if(globalConfiguration.isFirstPlayerHuman()){
-            isHumanPlayer1Button.setText("Player 1: Computer");
-        }else {
             isHumanPlayer1Button.setText("Player 1: Player");
+        }else {
+            isHumanPlayer1Button.setText("Player 1: Computer");
         }
 
         if(globalConfiguration.isSecondPlayerHuman()){
-            isHumanPlayer2Button.setText("Player 2: Computer");
-        }else {
             isHumanPlayer2Button.setText("Player 2: Player");
+        }else {
+            isHumanPlayer2Button.setText("Player 2: Computer");
         }
+
+        sizeFiled.setText(""+globalConfiguration.getSize());
+        numMovesProtectionField.setText(""+globalConfiguration.getNumMovesProtection());
+//        if(globalConfiguration.isFirstPlayerHuman()){
+//            isHumanPlayer1Button.setText("Player 1: Computer");
+//        }else {
+//            isHumanPlayer1Button.setText("Player 1: Player");
+//        }
+//
+//        if(globalConfiguration.isSecondPlayerHuman()){
+//            isHumanPlayer2Button.setText("Player 2: Computer");
+//        }else {
+//            isHumanPlayer2Button.setText("Player 2: Player");
+//        }
     }
 
     /**

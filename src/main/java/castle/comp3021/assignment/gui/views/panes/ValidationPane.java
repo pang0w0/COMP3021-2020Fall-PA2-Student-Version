@@ -1,6 +1,7 @@
 package castle.comp3021.assignment.gui.views.panes;
 
 import castle.comp3021.assignment.gui.FXJesonMor;
+import castle.comp3021.assignment.gui.controllers.SceneManager;
 import castle.comp3021.assignment.protocol.Configuration;
 import castle.comp3021.assignment.protocol.MoveRecord;
 import castle.comp3021.assignment.protocol.Place;
@@ -62,7 +63,9 @@ public class ValidationPane extends BasePane{
 
     @Override
     void connectComponents() {
-        // TODO
+        // TODO-DONE
+        validationButton.setDisable(true);
+        replayButton.setDisable(true);
         leftContainer.getChildren().addAll(title, explanation, loadButton, validationButton,
                 replayButton, returnButton);
 
@@ -85,6 +88,20 @@ public class ValidationPane extends BasePane{
     @Override
     void setCallbacks() {
         //TODO
+        loadButton.setOnAction(e->{
+
+        });
+
+        validationButton.setOnAction(e->{
+
+        });
+
+        replayButton.setOnAction(e->{
+
+        });
+
+        returnButton.setOnAction(e->{ SceneManager.getInstance().showPane(MainMenuPane.class); });
+
     }
 
     /**
