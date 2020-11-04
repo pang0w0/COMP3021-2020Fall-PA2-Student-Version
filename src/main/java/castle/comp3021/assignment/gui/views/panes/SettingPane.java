@@ -2,11 +2,14 @@ package castle.comp3021.assignment.gui.views.panes;
 import castle.comp3021.assignment.gui.DurationTimer;
 import castle.comp3021.assignment.gui.ViewConfig;
 import castle.comp3021.assignment.gui.controllers.AudioManager;
+import castle.comp3021.assignment.gui.controllers.SceneManager;
 import castle.comp3021.assignment.gui.views.BigButton;
 import castle.comp3021.assignment.gui.views.BigVBox;
 import castle.comp3021.assignment.gui.views.NumberTextField;
 import castle.comp3021.assignment.gui.views.SideMenuVBox;
 import castle.comp3021.assignment.protocol.Configuration;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -69,7 +72,12 @@ public class SettingPane extends BasePane {
      */
     @Override
     void connectComponents() {
-        //TODO
+        //TODO-DONE
+        leftContainer.getChildren().addAll(title, sizeBox, numMovesProtectionBox, durationBox,
+                isHumanPlayer1Button, isHumanPlayer2Button, toggleSoundButton, saveButton, returnButton);
+        centerContainer.getChildren().add(infoText);
+        setLeft(leftContainer);
+        setCenter(centerContainer);
     }
 
     @Override
@@ -96,6 +104,35 @@ public class SettingPane extends BasePane {
     @Override
     void setCallbacks() {
         //TODO
+        isHumanPlayer1Button.setOnAction(e->{
+            if (globalConfiguration.isFirstPlayerHuman()){
+                isHumanPlayer1Button.setText("Player 1: Computer");
+            }else{
+                isHumanPlayer1Button.setText("Player 1: Player");
+            }
+        });
+
+        isHumanPlayer2Button.setOnAction(e->{
+            if (globalConfiguration.isSecondPlayerHuman()){
+                isHumanPlayer2Button.setText("Player 2: Computer");
+            }else{
+                isHumanPlayer2Button.setText("Player 2: Player");
+            }
+        });
+
+        toggleSoundButton.setOnAction(e->{
+            if(AudioManager.getInstance().isEnabled()){
+                AudioManager.getInstance().setEnabled(false);
+                toggleSoundButton.setText("Sound FX: Disabled");
+            }else {
+                AudioManager.getInstance().setEnabled(true);
+                toggleSoundButton.setText("Sound FX: Enabled");
+            }
+        });
+
+        saveButton.setOnAction(e->{returnToMainMenu(true);});
+
+        returnButton.setOnAction(e->{returnToMainMenu(false);});
     }
 
     /**
@@ -103,6 +140,21 @@ public class SettingPane extends BasePane {
      */
     private void fillValues() {
         // TODO
+        sizeFiled.setText(""+globalConfiguration.getSize());
+        numMovesProtectionField.setText(""+globalConfiguration.getNumMovesProtection());
+
+        if(globalConfiguration.isFirstPlayerHuman()){
+            isHumanPlayer1Button.setText("Player 1: Computer");
+        }else {
+            isHumanPlayer1Button.setText("Player 1: Player");
+        }
+
+        if(globalConfiguration.isSecondPlayerHuman()){
+            isHumanPlayer2Button.setText("Player 2: Computer");
+        }else {
+            isHumanPlayer2Button.setText("Player 2: Player");
+        }
+
     }
 
     /**
@@ -112,6 +164,13 @@ public class SettingPane extends BasePane {
      */
     private void returnToMainMenu(final boolean writeBack) {
         //TODO
+        if(writeBack){
+            globalConfiguration.setSize(sizeFiled.getValue());
+            globalConfiguration.setNumMovesProtection(numMovesProtectionField.getValue());
+            globalConfiguration.setFirstPlayerHuman(isHumanPlayer1Button.getText().equals("Player 1: Player"));
+            globalConfiguration.setSecondPlayerHuman(isHumanPlayer2Button.getText().equals("Player 2: Player"));
+        }
+        SceneManager.getInstance().showPane(MainMenuPane.class);
     }
 
     /**
@@ -124,7 +183,23 @@ public class SettingPane extends BasePane {
      *      * otherwise.
      */
     public static Optional<String> validate(int size, int numProtection, int duration) {
-        //TODO
-        return null;
+        //TODO-DONE
+        if(size % 2 == 0){
+            return Optional.of(ViewConfig.MSG_ODD_SIZE_NUM);
+        }else if(size < 3){
+            return Optional.of(ViewConfig.MSG_BAD_SIZE_NUM);
+        }else if(size > 26){
+            return Optional.of(ViewConfig.MSG_UPPERBOUND_SIZE_NUM);
+        }
+
+        if(numProtection < 0){
+            return Optional.of(ViewConfig.MSG_NEG_PROT);
+        }
+
+        if(duration <= 0){
+            return  Optional.of(ViewConfig.MSG_NEG_DURATION);
+        }
+
+        return Optional.empty();
     }
 }

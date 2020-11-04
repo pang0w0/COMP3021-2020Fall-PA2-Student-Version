@@ -6,6 +6,9 @@ import castle.comp3021.assignment.gui.controllers.SceneManager;
 import castle.comp3021.assignment.gui.views.BigButton;
 import castle.comp3021.assignment.gui.views.BigVBox;
 import castle.comp3021.assignment.gui.views.NumberTextField;
+import castle.comp3021.assignment.protocol.Configuration;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
@@ -54,7 +57,13 @@ public class GamePane extends BasePane {
 
     @Override
     void connectComponents() {
-        //TODO
+        //TODO-DONE
+//        container.setAlignment(Pos.CENTER);
+//        sizeBox.setPadding(new Insets(0,20,0,20));
+//        numMovesProtectionBox.setPadding(new Insets(0,20,0,20));
+        container.getChildren().addAll(title, sizeBox, numMovesProtectionBox, isHumanPlayer1Button,
+                isHumanPlayer2Button, useDefaultButton, playButton, returnButton);
+        setCenter(container);
     }
 
     @Override
@@ -75,7 +84,15 @@ public class GamePane extends BasePane {
      */
     @Override
     void setCallbacks() {
-        //TODO
+        //TODO-70%
+
+        useDefaultButton.setOnAction(e->{fillValues();});
+
+        playButton.setOnAction(e->{
+
+        });
+
+        returnButton.setOnAction(e->{SceneManager.getInstance().showPane(MainMenuPane.class);});
     }
 
     /**
@@ -94,7 +111,21 @@ public class GamePane extends BasePane {
      * Fill in the default values for all editable fields.
      */
     void fillValues(){
-        // TODO
+        // TODO-DONE
+        sizeFiled.setText(""+globalConfiguration.getSize());
+        numMovesProtectionField.setText(""+globalConfiguration.getNumMovesProtection());
+
+        if(globalConfiguration.isFirstPlayerHuman()){
+            isHumanPlayer1Button.setText("Player 1: Computer");
+        }else {
+            isHumanPlayer1Button.setText("Player 1: Player");
+        }
+
+        if(globalConfiguration.isSecondPlayerHuman()){
+            isHumanPlayer2Button.setText("Player 2: Computer");
+        }else {
+            isHumanPlayer2Button.setText("Player 2: Player");
+        }
     }
 
     /**
@@ -106,7 +137,19 @@ public class GamePane extends BasePane {
      *      * otherwise.
      */
     public static Optional<String> validate(int size, int numProtection) {
-        //TODO
-        return null;
+        //TODO-DONE
+        if(size % 2 == 0){
+            return Optional.of(ViewConfig.MSG_ODD_SIZE_NUM);
+        }else if(size < 3){
+            return Optional.of(ViewConfig.MSG_BAD_SIZE_NUM);
+        }else if(size > 26){
+            return Optional.of(ViewConfig.MSG_UPPERBOUND_SIZE_NUM);
+        }
+
+        if(numProtection < 0){
+            return Optional.of(ViewConfig.MSG_NEG_PROT);
+        }
+
+        return Optional.empty();
     }
 }

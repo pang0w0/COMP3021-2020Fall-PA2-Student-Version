@@ -9,6 +9,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -25,7 +26,8 @@ public class ResourceLoader {
     static {
         // TODO: Initialize RES_PATH-DONE?
         // replace null to the actual path
-        RES_PATH = Paths.get("C:\\Users\\pang\\IdeaProjects\\COMP3021-2020Fall-PA2-Student-Version\\src\\main\\resources");
+        RES_PATH = Paths.get("C:\\Users\\pang\\IdeaProjects\\COMP3021-2020Fall-PA2-Student-Version\\" +
+                "src\\main\\resources\\assets\\");
     }
 
     /**
@@ -38,7 +40,11 @@ public class ResourceLoader {
     @NotNull
     public static String getResource(@NotNull final String relativePath){
         // TODO-?????
-
+        try {
+            Paths.get(RES_PATH.toString() + relativePath);
+        } catch (InvalidPathException e){
+            throw new ResourceNotFoundException("the file cannot be found under the resource directory");
+        }
 
         return RES_PATH.toString() + relativePath;
     }

@@ -8,6 +8,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 //import castle.comp3021.assignment.gui.views.panes.*;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Map;
 
 /**
@@ -67,10 +69,13 @@ public class SceneManager {
      * Add CSS styles to every scene
      */
     private SceneManager() {
-        //TODO-DOING???
-        //stage.setTitle("MainMenuPane");
-        stage.setScene(mainMenuScene);
-
+        //TODO-DONE
+        String path = "file:src/main/resources/assets/styles/styles.css";
+        mainMenuScene.getStylesheets().add(path);
+        settingsScene.getStylesheets().add(path);
+        gameplayScene.getStylesheets().add(path);
+        settingEditorScene.getStylesheets().add(path);
+        validationScene.getStylesheets().add(path);
     }
 
     /**
@@ -113,7 +118,24 @@ public class SceneManager {
      *
      */
     public void showPane(@NotNull final Class<? extends BasePane> pane) {
-        //TODO
+        //TODO-DONE?
+        if(getPane(pane) != null){
+            if(getPane(pane).getClass() == MainMenuPane.class){
+                showScene(mainMenuScene);
+            }else if(getPane(pane).getClass() == GamePane.class){
+                showScene(settingsScene);
+            }else if(getPane(pane).getClass() == GamePlayPane.class){
+                showScene(gameplayScene);
+            }else if(getPane(pane).getClass() == SettingPane.class){
+                showScene(settingEditorScene);
+            }else if(getPane(pane).getClass() == ValidationPane.class){
+                showScene(validationScene);
+            }else{
+                throw new IllegalArgumentException();
+            }
+        }else{
+            throw new IllegalArgumentException();
+        }
     }
 
     /**

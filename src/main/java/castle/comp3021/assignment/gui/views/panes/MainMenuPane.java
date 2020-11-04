@@ -1,9 +1,14 @@
 package castle.comp3021.assignment.gui.views.panes;
 
+import castle.comp3021.assignment.gui.ViewConfig;
 import castle.comp3021.assignment.gui.controllers.SceneManager;
+import castle.comp3021.assignment.protocol.Configuration;
 import javafx.application.Platform;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import org.jetbrains.annotations.NotNull;
 import castle.comp3021.assignment.gui.views.BigButton;
@@ -32,7 +37,10 @@ public class MainMenuPane extends BasePane {
 
     @Override
     void connectComponents() {
-        // TODO
+        // TODO-DONE
+        //container.setAlignment(Pos.CENTER);
+        container.getChildren().addAll(title, playButton, settingsButton, validationButtion, quitButton);
+        setCenter(container);
     }
 
     /**
@@ -53,7 +61,12 @@ public class MainMenuPane extends BasePane {
      */
     @Override
     void setCallbacks() {
-        //TODO
+        //TODO-DOING
+        playButton.setOnAction(e->{SceneManager.getInstance().showPane(GamePane.class);});
+        settingsButton.setOnAction(e->{SceneManager.getInstance().showPane(SettingPane.class);});
+        validationButtion.setOnAction(e->{SceneManager.getInstance().showPane(ValidationPane.class);});
+
+        //quitButton.setOnAction(e->{}); HOW TO QUIT?
     }
 
 }
