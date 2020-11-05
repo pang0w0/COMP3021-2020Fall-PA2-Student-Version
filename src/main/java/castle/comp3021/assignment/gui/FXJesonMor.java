@@ -30,6 +30,11 @@ public class FXJesonMor extends JesonMor {
     public FXJesonMor(Configuration configuration){
         //TODO
         super(configuration);
+        scorePlayer1Property.setValue(configuration.getPlayers()[0].getScore());
+        scorePlayer2Property.setValue(configuration.getPlayers()[1].getScore());
+        currentPlayerNameProperty.setValue(getCurrentPlayer().getName());
+
+        durationTimer = new DurationTimer();
     }
 
     /**
@@ -40,6 +45,8 @@ public class FXJesonMor extends JesonMor {
      */
     public void renderBoard(@NotNull Canvas canvas){
         //TODO
+        Renderer.renderChessBoard(canvas, getConfiguration().getSize(), getConfiguration().getCentralPlace());
+        Renderer.renderPieces(canvas, getConfiguration().getInitialBoard());
     }
 
     /**
@@ -93,6 +100,12 @@ public class FXJesonMor extends JesonMor {
         player.setScore(player.getScore() + newScore);
 
         // update score to 2 properties
-        // TODO: update scorePlayer1Property and scorePlayer2Property
+        // TODO: update scorePlayer1Property and scorePlayer2Property-DONE
+        if(player.getName().equals("White")){
+            scorePlayer1Property.setValue(player.getScore());
+        }else {
+            scorePlayer2Property.setValue(player.getScore());
+        }
+
     }
 }

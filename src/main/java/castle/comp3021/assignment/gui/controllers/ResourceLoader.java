@@ -64,43 +64,40 @@ public class ResourceLoader {
     @NotNull
     public static Image getImage(char typeChar) {
         // TODO-DONE?
-        Image image = null;
+        Image image;
         String loc;
         switch (typeChar){
             case 'K':
-                loc = getResource("images/whiteK.png");
-                image = new Image(loc);
+                //loc = getResource("assets/images/whiteK.png");
+                image = new Image("file:src/main/resources/assets/images/whiteK.png");
                 break;
             case 'A':
-                loc = getResource("images/whiteA.png");
-                image = new Image(loc);
+                //loc = getResource("assets/images/whiteA.png");
+                image = new Image("file:src/main/resources/assets/images/whiteA.png");
                 break;
             case 'k':
-                loc = getResource("images/blackK.png");
-                image = new Image(loc);
+                //loc = getResource("assets/images/blackK.png");
+                image = new Image("file:src/main/resources/assets/images/blackK.png");
                 break;
             case 'a':
-                loc = getResource("images/blackA.png");
-                image = new Image(loc);
+                //loc = getResource("assets/images/blackA.png");
+                image = new Image("file:src/main/resources/assets/images/blackA.png");
                 break;
             case 'c':
-                loc = getResource("images/center.png");
-                image = new Image(loc);
+                //loc = getResource("assets/images/center.png");
+                image = new Image("file:src/main/resources/assets/images/center.png");
                 break;
             case 'l':
-                loc = getResource("images/lightBoard.png");
-                image = new Image(loc);
-                break;
-            case 'd':
-                loc = getResource("images/darkBoard.png");
-                image = new Image(loc);
+                //loc = getResource("assets/images/lightBoard.png");
+                image = new Image("file:src/main/resources/assets/images/lightBoard.png");
                 break;
             default:
+            case 'd':
+                //loc = getResource("assets/images/darkBoard.png");
+                image = new Image("file:src/main/resources/assets/images/darkBoard.png");
+                break;
         }
-
-        assert image != null;
         return image;
     }
-
 
 }

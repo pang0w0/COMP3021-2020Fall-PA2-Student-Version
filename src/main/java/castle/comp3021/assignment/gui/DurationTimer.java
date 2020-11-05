@@ -1,5 +1,10 @@
 package castle.comp3021.assignment.gui;
 
+import castle.comp3021.assignment.gui.controllers.SceneManager;
+import castle.comp3021.assignment.gui.views.panes.GamePlayPane;
+import javafx.application.Platform;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -59,6 +64,11 @@ public class DurationTimer {
      */
     void start() {
         //TODO
+        flowTimer.scheduleAtFixedRate(new TimerTask() {
+            public void run() {
+                ticksElapsed++;
+                Platform.runLater( ()->GamePlayPane.time.setValue(defaultEachRound - ticksElapsed));
+            }}, 1000,1000);
     }
 
     /**
@@ -66,6 +76,7 @@ public class DurationTimer {
      */
     void stop() {
         //TODO
+        flowTimer.cancel();
     }
 
 }

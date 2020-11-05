@@ -10,11 +10,16 @@ import castle.comp3021.assignment.gui.views.SideMenuVBox;
 import castle.comp3021.assignment.protocol.Configuration;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
@@ -131,7 +136,30 @@ public class SettingPane extends BasePane {
             }
         });
 
-        saveButton.setOnAction(e->{returnToMainMenu(true);});
+        saveButton.setOnAction(e->{
+            Optional o;
+            try {
+                o = validate(sizeFiled.getValue(), numMovesProtectionField.getValue(), durationField.getValue());
+            }catch (NumberFormatException err){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error!");
+                alert.setHeaderText("Validation Failed");
+                alert.setContentText("Some filed is null or invalid format");
+                alert.showAndWait();
+                return;
+            }
+
+            if(o.isEmpty()){
+                returnToMainMenu(true);
+            }
+            else{
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error!");
+                alert.setHeaderText("Validation Failed");
+                alert.setContentText(o.get().toString());
+                alert.showAndWait();
+            }
+        });
 
         returnButton.setOnAction(e->{returnToMainMenu(false);});
     }
@@ -164,13 +192,15 @@ public class SettingPane extends BasePane {
      * @param writeBack Whether to save the values present in the text fields to their respective classes.
      */
     private void returnToMainMenu(final boolean writeBack) {
-        //TODO
+        //TODO-DONE
         if(writeBack){
             globalConfiguration.setSize(sizeFiled.getValue());
             globalConfiguration.setNumMovesProtection(numMovesProtectionField.getValue());
             globalConfiguration.setFirstPlayerHuman(isHumanPlayer1Button.getText().equals("Player 1: Player"));
             globalConfiguration.setSecondPlayerHuman(isHumanPlayer2Button.getText().equals("Player 2: Player"));
+            DurationTimer.setDefaultEachRound(durationField.getValue());
         }
+        fillValues();
         SceneManager.getInstance().showPane(MainMenuPane.class);
     }
 
@@ -185,10 +215,11 @@ public class SettingPane extends BasePane {
      */
     public static Optional<String> validate(int size, int numProtection, int duration) {
         //TODO-DONE
-        if(size % 2 == 0){
-            return Optional.of(ViewConfig.MSG_ODD_SIZE_NUM);
-        }else if(size < 3){
+        if(size < 3){
             return Optional.of(ViewConfig.MSG_BAD_SIZE_NUM);
+        }else if(size % 2 == 0){
+            return Optional.of(ViewConfig.MSG_ODD_SIZE_NUM);
+
         }else if(size > 26){
             return Optional.of(ViewConfig.MSG_UPPERBOUND_SIZE_NUM);
         }

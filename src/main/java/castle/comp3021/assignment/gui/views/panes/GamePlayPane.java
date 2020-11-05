@@ -3,6 +3,7 @@ package castle.comp3021.assignment.gui.views.panes;
 import castle.comp3021.assignment.gui.DurationTimer;
 import castle.comp3021.assignment.gui.FXJesonMor;
 import castle.comp3021.assignment.gui.ViewConfig;
+import castle.comp3021.assignment.gui.controllers.SceneManager;
 import castle.comp3021.assignment.gui.views.BigButton;
 import castle.comp3021.assignment.gui.views.BigVBox;
 import castle.comp3021.assignment.gui.views.GameplayInfoPane;
@@ -10,8 +11,7 @@ import castle.comp3021.assignment.gui.views.SideMenuVBox;
 import castle.comp3021.assignment.player.ConsolePlayer;
 import castle.comp3021.assignment.protocol.*;
 import castle.comp3021.assignment.gui.controllers.Renderer;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.*;
 import javafx.geometry.Pos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -20,6 +20,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import org.jetbrains.annotations.NotNull;
+
+import java.time.Duration;
 
 /**
  * This class implements the main playing function of Jeson Mor
@@ -86,7 +88,8 @@ public class GamePlayPane extends BasePane {
      *      - other global variable you want to note down.
      */
     // TODO
-
+    public FXJesonMor globalJeson = null;
+    public static  IntegerProperty time = new SimpleIntegerProperty(0);
 
     public GamePlayPane() {
         connectComponents();
@@ -99,30 +102,17 @@ public class GamePlayPane extends BasePane {
      */
     @Override
     void connectComponents() {
-        //TODO
-        String s = "Parameters:"+"\n"+
-                "\n"+
-                "Size of board: "+globalConfiguration.getSize()+"\n"+
-                "Num of protection moves: "+globalConfiguration.getNumMovesProtection()+"\n";
-        if(globalConfiguration.getPlayers()[0] instanceof ConsolePlayer){
-            s += "Player White(human)\n";
-        }else{
-            s += "Player White(computer)\n";
-        }
-
-        if(globalConfiguration.getPlayers()[1] instanceof ConsolePlayer){
-            s += "Player Black(human)\n";
-        }else{
-            s += "Player Black(computer)\n";
-        }
-
-        parameterText.setText(s);
+        //TODO-DONE
+        globalJeson = new FXJesonMor(globalConfiguration);
+        time.bindBidirectional(ticksElapsed);
+        infoPane = new GameplayInfoPane(globalJeson.getPlayer1Score(), globalJeson.getPlayer2Score(),
+                globalJeson.getCurPlayerName(), ticksElapsed);
 
         topBar.setAlignment(Pos.CENTER);
         topBar.getChildren().add(title);
         leftContainer.getChildren().addAll(parameterText, historyLabel, scrollPane,
                 startButton, restartButton, returnButton);
-        //centerContainer.getChildren().addAll(gamePlayCanvas, infoPane);
+        centerContainer.getChildren().addAll(gamePlayCanvas, infoPane);
         setTop(topBar);
         setLeft(leftContainer);
         setCenter(centerContainer);
@@ -144,7 +134,16 @@ public class GamePlayPane extends BasePane {
      */
     @Override
     void setCallbacks() {
-        //TODO
+        //TODO-DONE
+        startButton.setOnAction(e->{
+            startButton.setDisable(true);
+            restartButton.setDisable(false);
+            startGame();
+        });
+
+        restartButton.setOnAction(e->{ onRestartButtonClick(); });
+
+        returnButton.setOnAction(e->{SceneManager.getInstance().showPane(MainMenuPane.class);});
     }
 
     /**
@@ -158,7 +157,30 @@ public class GamePlayPane extends BasePane {
      * @param fxJesonMor pass in an instance of {@link FXJesonMor}
      */
     void initializeGame(@NotNull FXJesonMor fxJesonMor) {
-        //TODO
+        //TODO-DONE
+        globalJeson = fxJesonMor;
+        startButton.setDisable(false);
+        restartButton.setDisable(true);
+        ticksElapsed.setValue(DurationTimer.getDefaultEachRound());
+        String s = "Parameters:"+"\n"+
+                "\n"+
+                "Size of board: "+globalConfiguration.getSize()+"\n"+
+                "Num of protection moves: "+globalConfiguration.getNumMovesProtection()+"\n";
+        if(globalConfiguration.getPlayers()[0] instanceof ConsolePlayer){
+            s += "Player White(human)\n";
+        }else{
+            s += "Player White(computer)\n";
+        }
+        if(globalConfiguration.getPlayers()[1] instanceof ConsolePlayer){
+            s += "Player Black(human)\n";
+        }else{
+            s += "Player Black(computer)\n";
+        }
+        parameterText.setText(s);
+
+        gamePlayCanvas.setHeight(globalConfiguration.getSize() * ViewConfig.PIECE_SIZE);
+        gamePlayCanvas.setWidth(globalConfiguration.getSize() * ViewConfig.PIECE_SIZE);
+        fxJesonMor.renderBoard(gamePlayCanvas);
     }
 
     /**
@@ -192,6 +214,17 @@ public class GamePlayPane extends BasePane {
      */
     public void startGame() {
         //TODO
+        globalJeson.startCountdown();
+
+        gamePlayCanvas.setOnMousePressed(e->{
+
+        });
+        gamePlayCanvas.setOnMouseDragged(e->{
+
+        });
+        gamePlayCanvas.setOnMouseReleased(e->{
+
+        });
     }
 
     /**
@@ -200,6 +233,7 @@ public class GamePlayPane extends BasePane {
      */
     private void onRestartButtonClick(){
         //TODO
+
     }
 
     /**

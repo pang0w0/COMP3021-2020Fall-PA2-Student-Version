@@ -6,9 +6,16 @@ import castle.comp3021.assignment.gui.controllers.SceneManager;
 import castle.comp3021.assignment.gui.views.BigButton;
 import castle.comp3021.assignment.gui.views.BigVBox;
 import castle.comp3021.assignment.gui.views.NumberTextField;
+import castle.comp3021.assignment.piece.Archer;
+import castle.comp3021.assignment.piece.Knight;
+import castle.comp3021.assignment.player.ConsolePlayer;
+import castle.comp3021.assignment.player.RandomPlayer;
 import castle.comp3021.assignment.protocol.Configuration;
+import castle.comp3021.assignment.protocol.Player;
+import castle.comp3021.assignment.protocol.exception.InvalidConfigurationError;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
@@ -84,33 +91,91 @@ public class GamePane extends BasePane {
      */
     @Override
     void setCallbacks() {
-        //TODO-70%
+        //TODO-DONE
         isHumanPlayer1Button.setOnAction(e->{
-            if (globalConfiguration.isFirstPlayerHuman()){
+            if (isHumanPlayer1Button.getText().equals("Player 1: Player")){
                 isHumanPlayer1Button.setText("Player 1: Computer");
-                globalConfiguration.setFirstPlayerHuman(false);
             }else{
                 isHumanPlayer1Button.setText("Player 1: Player");
-                globalConfiguration.setFirstPlayerHuman(true);
             }
         });
 
         isHumanPlayer2Button.setOnAction(e->{
-            if (globalConfiguration.isSecondPlayerHuman()){
+            if (isHumanPlayer2Button.getText().equals("Player 2: Player")){
                 isHumanPlayer2Button.setText("Player 2: Computer");
-                globalConfiguration.setSecondPlayerHuman(false);
             }else{
                 isHumanPlayer2Button.setText("Player 2: Player");
-                globalConfiguration.setSecondPlayerHuman(true);
             }
         });
 
         useDefaultButton.setOnAction(e->{
-            sizeFiled.setText(""+globalConfiguration.getSize());
-            numMovesProtectionField.setText(""+globalConfiguration.getNumMovesProtection());
+            //sizeFiled.setText(""+globalConfiguration.getSize());
+            //numMovesProtectionField.setText(""+globalConfiguration.getNumMovesProtection());
+            fillValues();
         });
 
         playButton.setOnAction(e->{
+            Optional o;
+            try {
+                o = validate(sizeFiled.getValue(), numMovesProtectionField.getValue());
+            }catch (NumberFormatException err){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error!");
+                alert.setHeaderText("Validation Failed");
+                alert.setContentText("Some filed is null or invalid format");
+                alert.showAndWait();
+                return;
+            }
+            if(!o.isEmpty()){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error!");
+                alert.setHeaderText("Validation Failed");
+                alert.setContentText(o.get().toString());
+                alert.showAndWait();
+                return;
+            }
+
+            Player whitePlayer;
+            Player blackPlayer;
+
+            if (isHumanPlayer1Button.getText().equals("Player 1: Player")){
+                whitePlayer = new ConsolePlayer("White");
+            }else{
+                whitePlayer = new RandomPlayer("White");
+            }
+
+            if (isHumanPlayer2Button.getText().equals("Player 2: Player")){
+                blackPlayer = new ConsolePlayer("Black");
+            }else{
+                blackPlayer = new RandomPlayer("Black");
+            }
+
+            Player[] players = new Player[]{whitePlayer, blackPlayer};
+
+            try {
+                globalConfiguration = new Configuration(sizeFiled.getValue(), players, numMovesProtectionField.getValue());
+            }catch (InvalidConfigurationError err){
+                System.out.println(err);
+                return;
+            }
+
+            for (int i = 0; i < globalConfiguration.getSize(); i++) {
+                if (i % 2 == 0) {
+                    globalConfiguration.addInitialPiece(
+                            new Knight(blackPlayer), i, globalConfiguration.getSize() - 1);
+                } else {
+                    globalConfiguration.addInitialPiece(
+                            new Archer(blackPlayer), i, globalConfiguration.getSize() - 1);
+                }
+            }
+            for (int i = 0; i < globalConfiguration.getSize(); i++) {
+                if (i % 2 == 0) {
+                    globalConfiguration.addInitialPiece(new Knight(whitePlayer), i, 0);
+                } else {
+                    globalConfiguration.addInitialPiece(new Archer(whitePlayer), i, 0);
+                }
+            }
+
             fxJesonMor = new FXJesonMor(globalConfiguration);
             startGame(fxJesonMor);
         });
