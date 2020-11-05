@@ -22,6 +22,7 @@ import javafx.scene.text.Text;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.Duration;
+import java.util.ArrayList;
 
 /**
  * This class implements the main playing function of Jeson Mor
@@ -90,6 +91,8 @@ public class GamePlayPane extends BasePane {
     // TODO
     public FXJesonMor globalJeson = null;
     public static  IntegerProperty time = new SimpleIntegerProperty(0);
+    private ArrayList<String> moveRecords = new ArrayList<>();
+    private Place source;
 
     public GamePlayPane() {
         connectComponents();
@@ -217,13 +220,13 @@ public class GamePlayPane extends BasePane {
         globalJeson.startCountdown();
 
         gamePlayCanvas.setOnMousePressed(e->{
-
+            onCanvasPressed(e);
         });
         gamePlayCanvas.setOnMouseDragged(e->{
-
+            onCanvasDragged(e);
         });
         gamePlayCanvas.setOnMouseReleased(e->{
-
+            onCanvasReleased(e);
         });
     }
 
@@ -247,6 +250,9 @@ public class GamePlayPane extends BasePane {
      */
     private void onCanvasPressed(MouseEvent event){
         // TODO
+        Renderer.drawRectangle(gamePlayCanvas.getGraphicsContext2D(),
+                toBoardCoordinate(event.getX()), toBoardCoordinate(event.getY()));
+        source = new Place(toBoardCoordinate(event.getX()), toBoardCoordinate(event.getY()));
     }
 
     /**
@@ -258,6 +264,7 @@ public class GamePlayPane extends BasePane {
      */
     private void onCanvasDragged(MouseEvent event){
         //TODO
+        Renderer.drawOval(gamePlayCanvas.getGraphicsContext2D(), event.getX(), event.getY());
     }
 
     /**
@@ -270,6 +277,19 @@ public class GamePlayPane extends BasePane {
      */
     private void onCanvasReleased(MouseEvent event){
         // TODO
+        Move tempMove = new Move(source, new Place(toBoardCoordinate(event.getX()), toBoardCoordinate(event.getY())));
+
+        Move[] avaMove = globalJeson.getAvailableMoves(globalJeson.getCurrentPlayer());
+        for(int i=0;i<avaMove.length;i++){
+            if(avaMove[i].equals(tempMove)){
+                globalJeson.movePiece(tempMove);
+            }else if(i == avaMove.length - 1){
+                //error
+            }
+        }
+
+        globalJeson.renderBoard(gamePlayCanvas);
+        Renderer.renderPieces(gamePlayCanvas, globalConfiguration.getInitialBoard());
     }
 
     /**
@@ -337,8 +357,8 @@ public class GamePlayPane extends BasePane {
      * @return the coordinate on board
      */
     private int toBoardCoordinate(double x){
-        // TODO
-        return 0;
+        // TODO-DONE
+        return (int) (x / ViewConfig.PIECE_SIZE);
     }
 
     /**

@@ -6,6 +6,7 @@ import castle.comp3021.assignment.protocol.Place;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 import org.jetbrains.annotations.NotNull;
 
 
@@ -51,7 +52,9 @@ public class Renderer {
      * @param y     Y-coordinate relative to the graphics context to draw the oval.
      */
     public static void drawOval(@NotNull GraphicsContext gc, double x, double y) {
-        // TODO
+        // TODO-DONE
+        gc.setFill(Color.rgb(255, 255, 220));
+        gc.fillOval(x, y, 12, 12);
     }
 
     /**
@@ -62,7 +65,10 @@ public class Renderer {
      * @param y Y-coordinate relative to the graphics context to draw the rectangle.
      */
     public static void drawRectangle(@NotNull GraphicsContext gc, double x, double y){
-        //TODO
+        //TODO-DONE
+        gc.setFill(Color.rgb(255, 255, 220));
+        gc.fillRect(x * ViewConfig.PIECE_SIZE, y * ViewConfig.PIECE_SIZE,
+                ViewConfig.PIECE_SIZE, ViewConfig.PIECE_SIZE);
     }
 
     /**

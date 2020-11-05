@@ -143,10 +143,8 @@ public class JesonMor extends Game {
         var sourcePiece = this.getPiece(move.getSource());
         assert sourcePiece != null;
         var destPiece = this.getPiece(move.getDestination());
-
         assert destPiece == null || !destPiece.getPlayer().equals(sourcePiece.getPlayer())
                 : "cannot capture a piece belonging to the same player";
-
         // move the piece
         this.board[move.getDestination().x()][move.getDestination().y()] = sourcePiece;
         this.board[move.getSource().x()][move.getSource().y()] = null;
