@@ -3,6 +3,7 @@ package castle.comp3021.assignment.gui.views.panes;
 import castle.comp3021.assignment.gui.DurationTimer;
 import castle.comp3021.assignment.gui.FXJesonMor;
 import castle.comp3021.assignment.gui.ViewConfig;
+import castle.comp3021.assignment.gui.controllers.AudioManager;
 import castle.comp3021.assignment.gui.controllers.SceneManager;
 import castle.comp3021.assignment.gui.views.BigButton;
 import castle.comp3021.assignment.gui.views.BigVBox;
@@ -13,6 +14,7 @@ import castle.comp3021.assignment.player.ConsolePlayer;
 import castle.comp3021.assignment.player.RandomPlayer;
 import castle.comp3021.assignment.protocol.*;
 import castle.comp3021.assignment.gui.controllers.Renderer;
+import castle.comp3021.assignment.protocol.io.Serializer;
 import javafx.beans.property.*;
 import javafx.geometry.Pos;
 import javafx.scene.canvas.Canvas;
@@ -21,8 +23,14 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -92,10 +100,9 @@ public class GamePlayPane extends BasePane {
      *      - other global variable you want to note down.
      */
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-    // TODO
+    // TODO-DONE?
     public FXJesonMor globalJeson = null;
     public static  IntegerProperty time = new SimpleIntegerProperty(0);
-    private ArrayList<String> moveRecords = new ArrayList<>();
     private Place source;
     private Move tempMove;
 
@@ -151,8 +158,8 @@ public class GamePlayPane extends BasePane {
         restartButton.setOnAction(e->{ onRestartButtonClick(); });
 
         returnButton.setOnAction(e->{
-            endGame();
-            SceneManager.getInstance().showPane(MainMenuPane.class);});
+            doQuitToMenuAction();
+            });
     }
 
     /**
@@ -231,7 +238,7 @@ public class GamePlayPane extends BasePane {
      *          - or you can take advantage of timer to automatically change player. (Bonus)
      */
     public void startGame() {
-        //TODO
+        //TODO-DONE
         globalJeson.startCountdown();
         enableCanvas();
 
@@ -251,7 +258,7 @@ public class GamePlayPane extends BasePane {
      * Hint: end the current game and start a new game
      */
     private void onRestartButtonClick(){
-        //TODO
+        //TODO-DONE
         startButton.setDisable(false);
         restartButton.setDisable(true);
         endGame();
@@ -307,6 +314,9 @@ public class GamePlayPane extends BasePane {
         // TODO-DONE
         Renderer.drawRectangle(gamePlayCanvas.getGraphicsContext2D(),
                 toBoardCoordinate(event.getX()), toBoardCoordinate(event.getY()));
+        if(AudioManager.getInstance().isEnabled()){
+            AudioManager.getInstance().playSound(AudioManager.SoundRes.CLICK);
+        }
         source = new Place(toBoardCoordinate(event.getX()), toBoardCoordinate(event.getY()));
     }
 
@@ -341,6 +351,9 @@ public class GamePlayPane extends BasePane {
 
         if(globalJeson.getCurrentPlayer().validateMove(globalJeson, tempMove) == null){
             if(globalJeson.getCurrentPlayer().equals(pieceMoved.getPlayer())){
+                if(AudioManager.getInstance().isEnabled()){
+                    AudioManager.getInstance().playSound(AudioManager.SoundRes.PLACE);
+                }
                 globalJeson.movePiece(tempMove);
             }
             else {
@@ -370,7 +383,7 @@ public class GamePlayPane extends BasePane {
      * Creates a popup which tells the winner
      */
     private void createWinPopup(String winnerName){
-        //TODO
+        //TODO-DONE
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Congratulations!");
         alert.setHeaderText("Confirmation");
@@ -385,10 +398,16 @@ public class GamePlayPane extends BasePane {
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == newGame){
             onRestartButtonClick();
-        } else if (result.get() == export) {
-
+        } else if (result.get() == export) {//save file
+            try {
+                Serializer.getInstance().saveToFile(globalJeson);
+            }catch (IOException ex){
+                System.out.println(ex);
+            }
+            //after save, restart
+            onRestartButtonClick();
         } else if (result.get() == returnMain) {
-            doQuitToMenuAction();
+            doQuitToMenu();
         }
     }
 
@@ -401,12 +420,15 @@ public class GamePlayPane extends BasePane {
      *      - Return to Main menu, using {@link GamePlayPane#doQuitToMenuAction()}
      */
     private void checkWinner(){
-        //TODO
+        //TODO-DONE
         //createWinPopup
         int lastX = tempMove.getDestination().x(), lastY = tempMove.getDestination().y();
         Piece lastPiece = globalConfiguration.getInitialBoard()[lastX][lastY];
         Player winner = globalJeson.getWinner(lastPiece.getPlayer(), lastPiece, tempMove);
         if(winner != null){
+            if(AudioManager.getInstance().isEnabled()){
+                AudioManager.getInstance().playSound(AudioManager.SoundRes.WIN);
+            }
             createWinPopup(winner.getName());
         }
     }
@@ -435,7 +457,7 @@ public class GamePlayPane extends BasePane {
      *  If click Cancle, than do nothing.
      */
     private void doQuitToMenuAction() {
-        // TODO
+        // TODO-DONE
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirm");
         alert.setHeaderText("Return to menu?");
@@ -465,7 +487,7 @@ public class GamePlayPane extends BasePane {
      * Hint: before quit, you need to end the game
      */
     private void doQuitToMenu() {
-        // TODO
+        // TODO-DONE
         endGame();
         SceneManager.getInstance().showPane(MainMenuPane.class);
     }

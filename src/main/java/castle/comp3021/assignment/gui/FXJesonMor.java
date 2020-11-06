@@ -28,7 +28,7 @@ public class FXJesonMor extends JesonMor {
      * @param configuration
      */
     public FXJesonMor(Configuration configuration){
-        //TODO
+        //TODO-DONE
         super(configuration);
         scorePlayer1Property.setValue(configuration.getPlayers()[0].getScore());
         scorePlayer2Property.setValue(configuration.getPlayers()[1].getScore());
@@ -43,7 +43,7 @@ public class FXJesonMor extends JesonMor {
      * @param canvas render the given canvas
      */
     public void renderBoard(@NotNull Canvas canvas){
-        //TODO
+        //TODO-DONE
         Renderer.renderChessBoard(canvas, getConfiguration().getSize(), getConfiguration().getCentralPlace());
         Renderer.renderPieces(canvas, getConfiguration().getInitialBoard());
     }

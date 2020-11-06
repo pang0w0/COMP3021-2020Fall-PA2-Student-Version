@@ -1,6 +1,7 @@
 package castle.comp3021.assignment.gui.controllers;
 
 import castle.comp3021.assignment.gui.ViewConfig;
+import castle.comp3021.assignment.piece.Knight;
 import castle.comp3021.assignment.protocol.Piece;
 import castle.comp3021.assignment.protocol.Place;
 import javafx.scene.canvas.Canvas;
@@ -108,35 +109,34 @@ public class Renderer {
      */
     public static void renderPieces(@NotNull Canvas canvas, @NotNull Piece[][] board) {
         //TODO-DONE
-        Image whiteK = ResourceLoader.getImage('K');
-        Image whiteA = ResourceLoader.getImage('A');
-        Image blackK = ResourceLoader.getImage('k');
-        Image blackA = ResourceLoader.getImage('a');
         GraphicsContext gc = canvas.getGraphicsContext2D();
-
         for(int i=0;i<board.length;i++){
             for(int j=0;j<board[0].length;j++){
-                if(board[i][j] == null){
-                    continue;
-                }
-
-                if(board[i][j].getPlayer().getName().equals("White")){
-                    if(board[i][j].getLabel() == 'K'){
-                        gc.drawImage(whiteK,i * ViewConfig.PIECE_SIZE,j * ViewConfig.PIECE_SIZE);
-                    }else {
-                        gc.drawImage(whiteA,i * ViewConfig.PIECE_SIZE,j * ViewConfig.PIECE_SIZE);
-                    }
-                }
-
-                if(board[i][j].getPlayer().getName().equals("Black")){
-                    if(board[i][j].getLabel() == 'K'){
-                        gc.drawImage(blackK,i * ViewConfig.PIECE_SIZE,j * ViewConfig.PIECE_SIZE);
-                    }else {
-                        gc.drawImage(blackA,i * ViewConfig.PIECE_SIZE,j * ViewConfig.PIECE_SIZE);
-                    }
+                if(board[i][j] != null) {
+                    gc.drawImage(board[i][j].getImageRep().image, i * ViewConfig.PIECE_SIZE, j * ViewConfig.PIECE_SIZE);
                 }
             }
         }
     }
 
 }
+
+//    Image whiteK = ResourceLoader.getImage('K');
+//    Image whiteA = ResourceLoader.getImage('A');
+//    Image blackK = ResourceLoader.getImage('k');
+//    Image blackA = ResourceLoader.getImage('a');
+//                if(board[i][j].getPlayer().getName().equals("White")){
+//                    if(board[i][j].getLabel() == 'K'){
+//                        gc.drawImage(whiteK,i * ViewConfig.PIECE_SIZE,j * ViewConfig.PIECE_SIZE);
+//                    }else {
+//                        gc.drawImage(whiteA,i * ViewConfig.PIECE_SIZE,j * ViewConfig.PIECE_SIZE);
+//                    }
+//                }
+//
+//                if(board[i][j].getPlayer().getName().equals("Black")){
+//                    if(board[i][j].getLabel() == 'K'){
+//                        gc.drawImage(blackK,i * ViewConfig.PIECE_SIZE,j * ViewConfig.PIECE_SIZE);
+//                    }else {
+//                        gc.drawImage(blackA,i * ViewConfig.PIECE_SIZE,j * ViewConfig.PIECE_SIZE);
+//                    }
+//                }

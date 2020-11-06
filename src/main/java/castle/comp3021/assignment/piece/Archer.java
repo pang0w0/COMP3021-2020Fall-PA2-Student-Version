@@ -71,9 +71,12 @@ public class Archer extends Piece {
      * @return {@link Renderer.CellImage}
      */
     public Renderer.@NotNull CellImage getImageRep() {
-        // TODO
-
-        return null;
+        // TODO-DONE
+        if(getPlayer().getName().equals("White")){
+            return new Renderer.CellImage(ResourceLoader.getImage('A'));
+        }else {
+            return new Renderer.CellImage(ResourceLoader.getImage('a'));
+        }
     }
 
 

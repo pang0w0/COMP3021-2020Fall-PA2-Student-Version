@@ -2,9 +2,14 @@ package castle.comp3021.assignment.protocol.io;
 
 
 import castle.comp3021.assignment.gui.FXJesonMor;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * This class exports the entire game configuration and procedure to file
@@ -28,11 +33,26 @@ public class Serializer {
 
     /**
      * Save a {@link castle.comp3021.assignment.textversion.JesonMor} to file.
+     *
      * @param fxJesonMor a fxJesonMor instance under export
      * @throws IOException if an I/O exception has occurred.
      */
     public void saveToFile(FXJesonMor fxJesonMor) throws IOException {
-        //TODO
+        //TODO-DONE
+        FileChooser fileChooser = new FileChooser();
+        //fileChooser.setTitle("Save");
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("All Files", "*.*"));
+        Stage s = new Stage();
+        File file = fileChooser.showSaveDialog(s);
+        if (file != null) {
+            try {
+                PrintWriter writer;
+                writer = new PrintWriter(file);
+                writer.write(fxJesonMor.toString());
+                writer.close();
+            } catch (FileNotFoundException ex) {
+                System.out.println(ex);
+            }
+        }
     }
-
 }

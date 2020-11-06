@@ -109,7 +109,7 @@ public class SettingPane extends BasePane {
      */
     @Override
     void setCallbacks() {
-        //TODO
+        //TODO-DONE
         isHumanPlayer1Button.setOnAction(e->{
             if (isHumanPlayer1Button.getText().equals("Player 1: Player")){
                 isHumanPlayer1Button.setText("Player 1: Computer");
@@ -127,11 +127,9 @@ public class SettingPane extends BasePane {
         });
 
         toggleSoundButton.setOnAction(e->{
-            if(AudioManager.getInstance().isEnabled()){
-                AudioManager.getInstance().setEnabled(false);
+            if(toggleSoundButton.getText().equals("Sound FX: Enabled")){
                 toggleSoundButton.setText("Sound FX: Disabled");
             }else {
-                AudioManager.getInstance().setEnabled(true);
                 toggleSoundButton.setText("Sound FX: Enabled");
             }
         });
@@ -168,9 +166,10 @@ public class SettingPane extends BasePane {
      * Fill in the default values for all editable fields.
      */
     private void fillValues() {
-        // TODO
+        // TODO-DONE
         sizeFiled.setText(""+globalConfiguration.getSize());
         numMovesProtectionField.setText(""+globalConfiguration.getNumMovesProtection());
+        durationField.setText(""+DurationTimer.getDefaultEachRound());
 
         if(globalConfiguration.isFirstPlayerHuman()){
             isHumanPlayer1Button.setText("Player 1: Player");
@@ -184,6 +183,11 @@ public class SettingPane extends BasePane {
             isHumanPlayer2Button.setText("Player 2: Computer");
         }
 
+        if(AudioManager.getInstance().isEnabled()){
+            toggleSoundButton.setText("Sound FX: Enabled");
+        }else {
+            toggleSoundButton.setText("Sound FX: Disabled");
+        }
     }
 
     /**
@@ -199,6 +203,11 @@ public class SettingPane extends BasePane {
             globalConfiguration.setFirstPlayerHuman(isHumanPlayer1Button.getText().equals("Player 1: Player"));
             globalConfiguration.setSecondPlayerHuman(isHumanPlayer2Button.getText().equals("Player 2: Player"));
             DurationTimer.setDefaultEachRound(durationField.getValue());
+            if(toggleSoundButton.getText().equals("Sound FX: Disabled")){
+                AudioManager.getInstance().setEnabled(false);
+            }else {
+                AudioManager.getInstance().setEnabled(true);
+            }
         }
         fillValues();
         SceneManager.getInstance().showPane(MainMenuPane.class);

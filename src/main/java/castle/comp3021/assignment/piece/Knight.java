@@ -74,7 +74,11 @@ public class Knight extends Piece {
      * @return {@link Renderer.CellImage}
      */
     public Renderer.@NotNull CellImage getImageRep() {
-        //TODO
-        return null;
+        //TODO-DONE
+        if(getPlayer().getName().equals("White")){
+            return new Renderer.CellImage(ResourceLoader.getImage('K'));
+        }else {
+            return new Renderer.CellImage(ResourceLoader.getImage('k'));
+        }
     }
 }

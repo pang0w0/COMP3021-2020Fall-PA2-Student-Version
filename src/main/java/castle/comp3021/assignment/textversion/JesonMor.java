@@ -189,7 +189,16 @@ public class JesonMor extends Game {
      */
     @Override
     public String toString() {
-        //TODO
-        return "";
+        //TODO-DONE
+        String s = "### FXJesonMor ###\n\n"+
+                "#Game setting\n"+
+                configuration.toString()+"\n"+
+                "#Move records\n";
+
+        for(int i=0;i<moveRecords.size();i++){
+            s += moveRecords.get(i).toString() + "\n";
+        }
+        s += "\nEND";
+        return s;
     }
 }
