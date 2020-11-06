@@ -32,7 +32,6 @@ public class FXJesonMor extends JesonMor {
         super(configuration);
         scorePlayer1Property.setValue(configuration.getPlayers()[0].getScore());
         scorePlayer2Property.setValue(configuration.getPlayers()[1].getScore());
-        currentPlayerNameProperty.setValue(getCurrentPlayer().getName());
 
         durationTimer = new DurationTimer();
     }
@@ -106,6 +105,7 @@ public class FXJesonMor extends JesonMor {
         }else {
             scorePlayer2Property.setValue(player.getScore());
         }
-
+        numMoves++;
+        currentPlayerNameProperty.setValue(getCurrentPlayer().getName());
     }
 }

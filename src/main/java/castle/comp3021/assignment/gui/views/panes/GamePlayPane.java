@@ -8,7 +8,9 @@ import castle.comp3021.assignment.gui.views.BigButton;
 import castle.comp3021.assignment.gui.views.BigVBox;
 import castle.comp3021.assignment.gui.views.GameplayInfoPane;
 import castle.comp3021.assignment.gui.views.SideMenuVBox;
+import castle.comp3021.assignment.piece.*;
 import castle.comp3021.assignment.player.ConsolePlayer;
+import castle.comp3021.assignment.player.RandomPlayer;
 import castle.comp3021.assignment.protocol.*;
 import castle.comp3021.assignment.gui.controllers.Renderer;
 import javafx.beans.property.*;
@@ -23,6 +25,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Optional;
 
 /**
  * This class implements the main playing function of Jeson Mor
@@ -88,11 +91,15 @@ public class GamePlayPane extends BasePane {
      *      - the passed in {@link FXJesonMor}
      *      - other global variable you want to note down.
      */
+    //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     // TODO
     public FXJesonMor globalJeson = null;
     public static  IntegerProperty time = new SimpleIntegerProperty(0);
     private ArrayList<String> moveRecords = new ArrayList<>();
     private Place source;
+    private Move tempMove;
+
+    //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
     public GamePlayPane() {
         connectComponents();
@@ -106,16 +113,13 @@ public class GamePlayPane extends BasePane {
     @Override
     void connectComponents() {
         //TODO-DONE
-        globalJeson = new FXJesonMor(globalConfiguration);
         time.bindBidirectional(ticksElapsed);
-        infoPane = new GameplayInfoPane(globalJeson.getPlayer1Score(), globalJeson.getPlayer2Score(),
-                globalJeson.getCurPlayerName(), ticksElapsed);
-
         topBar.setAlignment(Pos.CENTER);
         topBar.getChildren().add(title);
         leftContainer.getChildren().addAll(parameterText, historyLabel, scrollPane,
                 startButton, restartButton, returnButton);
-        centerContainer.getChildren().addAll(gamePlayCanvas, infoPane);
+        centerContainer.getChildren().add(gamePlayCanvas);
+
         setTop(topBar);
         setLeft(leftContainer);
         setCenter(centerContainer);
@@ -146,7 +150,9 @@ public class GamePlayPane extends BasePane {
 
         restartButton.setOnAction(e->{ onRestartButtonClick(); });
 
-        returnButton.setOnAction(e->{SceneManager.getInstance().showPane(MainMenuPane.class);});
+        returnButton.setOnAction(e->{
+            endGame();
+            SceneManager.getInstance().showPane(MainMenuPane.class);});
     }
 
     /**
@@ -164,7 +170,16 @@ public class GamePlayPane extends BasePane {
         globalJeson = fxJesonMor;
         startButton.setDisable(false);
         restartButton.setDisable(true);
+        disnableCanvas();
         ticksElapsed.setValue(DurationTimer.getDefaultEachRound());
+        //create a new container that have new configuration
+        if(infoPane != null){
+            centerContainer.getChildren().remove(1);
+        }
+        infoPane = new GameplayInfoPane(globalJeson.getPlayer1Score(), globalJeson.getPlayer2Score(),
+                globalJeson.getCurPlayerName(), ticksElapsed);
+        centerContainer.getChildren().add(infoPane);
+        //
         String s = "Parameters:"+"\n"+
                 "\n"+
                 "Size of board: "+globalConfiguration.getSize()+"\n"+
@@ -218,6 +233,7 @@ public class GamePlayPane extends BasePane {
     public void startGame() {
         //TODO
         globalJeson.startCountdown();
+        enableCanvas();
 
         gamePlayCanvas.setOnMousePressed(e->{
             onCanvasPressed(e);
@@ -236,7 +252,46 @@ public class GamePlayPane extends BasePane {
      */
     private void onRestartButtonClick(){
         //TODO
+        startButton.setDisable(false);
+        restartButton.setDisable(true);
+        endGame();
 
+        Player whitePlayer;
+        Player blackPlayer;
+
+        if (globalConfiguration.isFirstPlayerHuman()){
+            whitePlayer = new ConsolePlayer("White");
+        }else{
+            whitePlayer = new RandomPlayer("White");
+        }
+        if (globalConfiguration.isSecondPlayerHuman()){
+            blackPlayer = new ConsolePlayer("Black");
+        }else{
+            blackPlayer = new RandomPlayer("Black");
+        }
+        Player[] players = new Player[]{whitePlayer, blackPlayer};
+        globalConfiguration = new Configuration(globalConfiguration.getSize(), players,
+                globalConfiguration.getNumMovesProtection());
+
+        for (int i = 0; i < globalConfiguration.getSize(); i++) {
+            if (i % 2 == 0) {
+                globalConfiguration.addInitialPiece(
+                        new Knight(globalConfiguration.getPlayers()[1]), i, globalConfiguration.getSize() - 1);
+            } else {
+                globalConfiguration.addInitialPiece(
+                        new Archer(globalConfiguration.getPlayers()[1]), i, globalConfiguration.getSize() - 1);
+            }
+        }
+        for (int i = 0; i < globalConfiguration.getSize(); i++) {
+            if (i % 2 == 0) {
+                globalConfiguration.addInitialPiece(new Knight(globalConfiguration.getPlayers()[0]), i, 0);
+            } else {
+                globalConfiguration.addInitialPiece(new Archer(globalConfiguration.getPlayers()[0]), i, 0);
+            }
+        }
+
+        globalJeson = new FXJesonMor(globalConfiguration);
+        initializeGame(globalJeson);
     }
 
     /**
@@ -249,7 +304,7 @@ public class GamePlayPane extends BasePane {
      * @param event mouse click
      */
     private void onCanvasPressed(MouseEvent event){
-        // TODO
+        // TODO-DONE
         Renderer.drawRectangle(gamePlayCanvas.getGraphicsContext2D(),
                 toBoardCoordinate(event.getX()), toBoardCoordinate(event.getY()));
         source = new Place(toBoardCoordinate(event.getX()), toBoardCoordinate(event.getY()));
@@ -263,7 +318,7 @@ public class GamePlayPane extends BasePane {
      * @param event mouse position
      */
     private void onCanvasDragged(MouseEvent event){
-        //TODO
+        //TODO-DONE
         Renderer.drawOval(gamePlayCanvas.getGraphicsContext2D(), event.getX(), event.getY());
     }
 
@@ -277,19 +332,38 @@ public class GamePlayPane extends BasePane {
      */
     private void onCanvasReleased(MouseEvent event){
         // TODO
-        Move tempMove = new Move(source, new Place(toBoardCoordinate(event.getX()), toBoardCoordinate(event.getY())));
-
-        Move[] avaMove = globalJeson.getAvailableMoves(globalJeson.getCurrentPlayer());
-        for(int i=0;i<avaMove.length;i++){
-            if(avaMove[i].equals(tempMove)){
-                globalJeson.movePiece(tempMove);
-            }else if(i == avaMove.length - 1){
-                //error
-            }
-        }
-
+        //clear the shape first
         globalJeson.renderBoard(gamePlayCanvas);
         Renderer.renderPieces(gamePlayCanvas, globalConfiguration.getInitialBoard());
+        //check whether the move is valid
+        tempMove = new Move(source, new Place(toBoardCoordinate(event.getX()), toBoardCoordinate(event.getY())));
+        Piece pieceMoved = globalConfiguration.getInitialBoard()[tempMove.getSource().x()][tempMove.getSource().y()];
+
+        if(globalJeson.getCurrentPlayer().validateMove(globalJeson, tempMove) == null){
+            if(globalJeson.getCurrentPlayer().equals(pieceMoved.getPlayer())){
+                globalJeson.movePiece(tempMove);
+            }
+            else {
+                showInvalidMoveMsg("The piece you moved does not belong to you!");
+                return;
+            }
+        }else{
+            showInvalidMoveMsg(globalJeson.getCurrentPlayer().validateMove(globalJeson, tempMove));
+            return;
+        }
+
+        //after successfully moved a piece
+        //render board
+        globalJeson.renderBoard(gamePlayCanvas);
+        Renderer.renderPieces(gamePlayCanvas, globalConfiguration.getInitialBoard());
+        //update history
+        updateHistoryField(tempMove);
+        //update score (+numOfMove+next player)
+        globalJeson.updateScore(globalJeson.getCurrentPlayer(), pieceMoved, tempMove);
+        //get winner
+        checkWinner();
+        //
+
     }
 
     /**
@@ -297,6 +371,25 @@ public class GamePlayPane extends BasePane {
      */
     private void createWinPopup(String winnerName){
         //TODO
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Congratulations!");
+        alert.setHeaderText("Confirmation");
+        alert.setContentText(winnerName + " win!");
+
+        ButtonType newGame = new ButtonType("Start New Game", ButtonBar.ButtonData.LEFT);
+        ButtonType export = new ButtonType("Export Move Records");
+        ButtonType returnMain = new ButtonType("Return to Main Menu", ButtonBar.ButtonData.RIGHT);
+
+        alert.getButtonTypes().setAll(newGame, export, returnMain);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == newGame){
+            onRestartButtonClick();
+        } else if (result.get() == export) {
+
+        } else if (result.get() == returnMain) {
+            doQuitToMenuAction();
+        }
     }
 
 
@@ -309,6 +402,13 @@ public class GamePlayPane extends BasePane {
      */
     private void checkWinner(){
         //TODO
+        //createWinPopup
+        int lastX = tempMove.getDestination().x(), lastY = tempMove.getDestination().y();
+        Piece lastPiece = globalConfiguration.getInitialBoard()[lastX][lastY];
+        Player winner = globalJeson.getWinner(lastPiece.getPlayer(), lastPiece, tempMove);
+        if(winner != null){
+            createWinPopup(winner.getName());
+        }
     }
 
     /**
@@ -316,7 +416,12 @@ public class GamePlayPane extends BasePane {
      * @param errorMsg error string stating why this move is invalid
      */
     private void showInvalidMoveMsg(String errorMsg){
-        //TODO
+        //TODO-DONE
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Invalid Move");
+        alert.setHeaderText("Your movement is invalid due to following reason(s):");
+        alert.setContentText(errorMsg);
+        alert.showAndWait();
     }
 
     /**
@@ -331,6 +436,17 @@ public class GamePlayPane extends BasePane {
      */
     private void doQuitToMenuAction() {
         // TODO
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirm");
+        alert.setHeaderText("Return to menu?");
+        alert.setContentText("Game progress will be lost.");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            doQuitToMenu();
+        } else {
+            //cancel and do nothing
+        }
     }
 
     /**
@@ -338,7 +454,10 @@ public class GamePlayPane extends BasePane {
      * @param move the last move that has been made
      */
     private void updateHistoryField(Move move){
-        //TODO
+        //TODO-DONE
+        historyFiled.setText(historyFiled.getText() +
+                String.format("[%d, %d]", move.getSource().x(), move.getSource().y()) + " -> " +
+                String.format("[%d, %d]", move.getDestination().x(), move.getDestination().y()) + "\n");
     }
 
     /**
@@ -347,6 +466,8 @@ public class GamePlayPane extends BasePane {
      */
     private void doQuitToMenu() {
         // TODO
+        endGame();
+        SceneManager.getInstance().showPane(MainMenuPane.class);
     }
 
     /**
@@ -371,5 +492,7 @@ public class GamePlayPane extends BasePane {
      */
     private void endGame() {
         //TODO
+        globalJeson.stopCountdown();
+        historyFiled.setText("");
     }
 }
