@@ -102,9 +102,37 @@ public class GamePlayPane extends BasePane {
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     // TODO-DONE?
     public FXJesonMor globalJeson = null;
-    public static  IntegerProperty time = new SimpleIntegerProperty(0);
     private Place source;
     private Move tempMove;
+
+    private void createTimeoutPopup(String loserName){
+        //TODO-DONE
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Sorry! Time's out!");
+        alert.setHeaderText("Confirmation");
+        alert.setContentText(loserName + " Lose!");
+
+        ButtonType newGame = new ButtonType("Start New Game", ButtonBar.ButtonData.LEFT);
+        ButtonType export = new ButtonType("Export Move Records");
+        ButtonType returnMain = new ButtonType("Return to Main Menu", ButtonBar.ButtonData.RIGHT);
+
+        alert.getButtonTypes().setAll(newGame, export, returnMain);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == newGame){
+            onRestartButtonClick();
+        } else if (result.get() == export) {//save file
+            try {
+                Serializer.getInstance().saveToFile(globalJeson);
+            }catch (IOException ex){
+                System.out.println(ex);
+            }
+            //after save, restart
+            onRestartButtonClick();
+        } else if (result.get() == returnMain) {
+            doQuitToMenu();
+        }
+    }
 
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
@@ -120,7 +148,6 @@ public class GamePlayPane extends BasePane {
     @Override
     void connectComponents() {
         //TODO-DONE
-        time.bindBidirectional(ticksElapsed);
         topBar.setAlignment(Pos.CENTER);
         topBar.getChildren().add(title);
         leftContainer.getChildren().addAll(parameterText, historyLabel, scrollPane,
@@ -160,6 +187,17 @@ public class GamePlayPane extends BasePane {
         returnButton.setOnAction(e->{
             doQuitToMenuAction();
             });
+
+        gamePlayCanvas.setOnMousePressed(e->{
+            onCanvasPressed(e);
+        });
+        gamePlayCanvas.setOnMouseDragged(e->{
+            onCanvasDragged(e);
+        });
+        gamePlayCanvas.setOnMouseReleased(e->{
+            onCanvasReleased(e);
+        });
+
     }
 
     /**
@@ -240,17 +278,47 @@ public class GamePlayPane extends BasePane {
     public void startGame() {
         //TODO-DONE
         globalJeson.startCountdown();
-        enableCanvas();
+        globalJeson.addOnTickHandler(()->{//add this event to the timer
+            ticksElapsed.set(ticksElapsed.get() - 1);
+            if(globalJeson.getCurrentPlayer() instanceof ConsolePlayer){
+                enableCanvas();
+            }else {
+                disnableCanvas();
 
-        gamePlayCanvas.setOnMousePressed(e->{
-            onCanvasPressed(e);
+                Move moved = globalJeson.getCurrentPlayer().nextMove(globalJeson,
+                        globalJeson.getAvailableMoves(globalJeson.getCurrentPlayer()));
+                Piece movedPiece = globalJeson.getPiece(moved.getSource());
+
+                if(AudioManager.getInstance().isEnabled()){
+                    AudioManager.getInstance().playSound(AudioManager.SoundRes.PLACE);
+                }
+                globalJeson.movePiece(moved);
+                tempMove = moved;//refresh the global variable
+                ticksElapsed.set(DurationTimer.getDefaultEachRound());
+
+                //after move, refresh board
+                globalJeson.renderBoard(gamePlayCanvas);
+                Renderer.renderPieces(gamePlayCanvas, globalConfiguration.getInitialBoard());
+                //update history
+                updateHistoryField(moved);
+                //update score (+numOfMove+next player)
+                globalJeson.updateScore(globalJeson.getCurrentPlayer(), movedPiece, moved);
+                //get winner
+                checkWinner();
+            }
+
+            if (ticksElapsed.get() < 0){
+                if(AudioManager.getInstance().isEnabled()){
+                    AudioManager.getInstance().playSound(AudioManager.SoundRes.LOSE);
+                }
+                globalJeson.stopCountdown();
+                createTimeoutPopup(globalJeson.getCurrentPlayer().getName());
+
+            }
         });
-        gamePlayCanvas.setOnMouseDragged(e->{
-            onCanvasDragged(e);
-        });
-        gamePlayCanvas.setOnMouseReleased(e->{
-            onCanvasReleased(e);
-        });
+
+
+
     }
 
     /**
@@ -279,23 +347,23 @@ public class GamePlayPane extends BasePane {
         Player[] players = new Player[]{whitePlayer, blackPlayer};
         globalConfiguration = new Configuration(globalConfiguration.getSize(), players,
                 globalConfiguration.getNumMovesProtection());
-
-        for (int i = 0; i < globalConfiguration.getSize(); i++) {
-            if (i % 2 == 0) {
-                globalConfiguration.addInitialPiece(
-                        new Knight(globalConfiguration.getPlayers()[1]), i, globalConfiguration.getSize() - 1);
-            } else {
-                globalConfiguration.addInitialPiece(
-                        new Archer(globalConfiguration.getPlayers()[1]), i, globalConfiguration.getSize() - 1);
-            }
-        }
-        for (int i = 0; i < globalConfiguration.getSize(); i++) {
-            if (i % 2 == 0) {
-                globalConfiguration.addInitialPiece(new Knight(globalConfiguration.getPlayers()[0]), i, 0);
-            } else {
-                globalConfiguration.addInitialPiece(new Archer(globalConfiguration.getPlayers()[0]), i, 0);
-            }
-        }
+        globalConfiguration.setAllInitialPieces();
+//        for (int i = 0; i < globalConfiguration.getSize(); i++) {
+//            if (i % 2 == 0) {
+//                globalConfiguration.addInitialPiece(
+//                        new Knight(globalConfiguration.getPlayers()[1]), i, globalConfiguration.getSize() - 1);
+//            } else {
+//                globalConfiguration.addInitialPiece(
+//                        new Archer(globalConfiguration.getPlayers()[1]), i, globalConfiguration.getSize() - 1);
+//            }
+//        }
+//        for (int i = 0; i < globalConfiguration.getSize(); i++) {
+//            if (i % 2 == 0) {
+//                globalConfiguration.addInitialPiece(new Knight(globalConfiguration.getPlayers()[0]), i, 0);
+//            } else {
+//                globalConfiguration.addInitialPiece(new Archer(globalConfiguration.getPlayers()[0]), i, 0);
+//            }
+//        }
 
         globalJeson = new FXJesonMor(globalConfiguration);
         initializeGame(globalJeson);
@@ -355,6 +423,7 @@ public class GamePlayPane extends BasePane {
                     AudioManager.getInstance().playSound(AudioManager.SoundRes.PLACE);
                 }
                 globalJeson.movePiece(tempMove);
+                ticksElapsed.set(DurationTimer.getDefaultEachRound());
             }
             else {
                 showInvalidMoveMsg("The piece you moved does not belong to you!");
@@ -429,6 +498,7 @@ public class GamePlayPane extends BasePane {
             if(AudioManager.getInstance().isEnabled()){
                 AudioManager.getInstance().playSound(AudioManager.SoundRes.WIN);
             }
+            globalJeson.stopCountdown();
             createWinPopup(winner.getName());
         }
     }

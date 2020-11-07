@@ -66,8 +66,13 @@ public class DurationTimer {
         //TODO
         flowTimer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
-                ticksElapsed++;
-                Platform.runLater( ()->GamePlayPane.time.setValue(defaultEachRound - ticksElapsed));
+                //ticksElapsed++;
+                Platform.runLater( ()-> {
+                    if(!onTickCallbacks.isEmpty()){
+                        onTickCallbacks.get(0).run();
+                        //onTickCallbacks.remove(0);
+                    }
+                });
             }}, 1000,1000);
     }
 

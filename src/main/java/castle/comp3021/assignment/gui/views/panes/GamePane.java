@@ -159,23 +159,23 @@ public class GamePane extends BasePane {
                 return;
             }
 
-            for (int i = 0; i < globalConfiguration.getSize(); i++) {
-                if (i % 2 == 0) {
-                    globalConfiguration.addInitialPiece(
-                            new Knight(blackPlayer), i, globalConfiguration.getSize() - 1);
-                } else {
-                    globalConfiguration.addInitialPiece(
-                            new Archer(blackPlayer), i, globalConfiguration.getSize() - 1);
-                }
-            }
-            for (int i = 0; i < globalConfiguration.getSize(); i++) {
-                if (i % 2 == 0) {
-                    globalConfiguration.addInitialPiece(new Knight(whitePlayer), i, 0);
-                } else {
-                    globalConfiguration.addInitialPiece(new Archer(whitePlayer), i, 0);
-                }
-            }
-
+//            for (int i = 0; i < globalConfiguration.getSize(); i++) {
+//                if (i % 2 == 0) {
+//                    globalConfiguration.addInitialPiece(
+//                            new Knight(blackPlayer), i, globalConfiguration.getSize() - 1);
+//                } else {
+//                    globalConfiguration.addInitialPiece(
+//                            new Archer(blackPlayer), i, globalConfiguration.getSize() - 1);
+//                }
+//            }
+//            for (int i = 0; i < globalConfiguration.getSize(); i++) {
+//                if (i % 2 == 0) {
+//                    globalConfiguration.addInitialPiece(new Knight(whitePlayer), i, 0);
+//                } else {
+//                    globalConfiguration.addInitialPiece(new Archer(whitePlayer), i, 0);
+//                }
+//            }
+            globalConfiguration.setAllInitialPieces();
             fxJesonMor = new FXJesonMor(globalConfiguration);
             startGame(fxJesonMor);
         });

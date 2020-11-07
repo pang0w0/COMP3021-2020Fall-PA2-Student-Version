@@ -1,6 +1,10 @@
 package castle.comp3021.assignment.protocol.io;
 
+import castle.comp3021.assignment.piece.Archer;
+import castle.comp3021.assignment.piece.Knight;
+import castle.comp3021.assignment.player.ConsolePlayer;
 import castle.comp3021.assignment.protocol.*;
+import castle.comp3021.assignment.protocol.exception.InvalidConfigurationError;
 import castle.comp3021.assignment.protocol.exception.InvalidGameException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -44,8 +48,12 @@ public class Deserializer {
      */
     @Nullable
     private String getFirstNonEmptyLine(@NotNull final BufferedReader br) throws IOException {
-        // TODO
-        return "";
+        // TODO-DONE
+        String s = br.readLine();
+        while(s.equals("") || s.charAt(0) == '#'){
+            s = br.readLine();
+        }
+        return s;
     }
 
     public void parseGame() {
@@ -55,7 +63,9 @@ public class Deserializer {
             int size;
             line = getFirstNonEmptyLine(reader);
             if (line != null) {
-                // TODO: get size here
+                // TODO: get size here-DONE
+                line = line.replace("size:", "");
+                size = Integer.parseInt(line);
             } else {
                 throw new InvalidGameException("Unexpected EOF when parsing number of board size");
             }
@@ -63,45 +73,79 @@ public class Deserializer {
             int numMovesProtection;
             line = getFirstNonEmptyLine(reader);
             if (line != null) {
-                // TODO: get numMovesProtection here
+                // TODO: get numMovesProtection here-DONE
+                line = line.replace("numMovesProtection:", "");
+                numMovesProtection = Integer.parseInt(line);
             } else {
                 throw new InvalidGameException("Unexpected EOF when parsing number of columns");
             }
 
-            //TODO
+            //TODO-DONE
             /**
              *  read central place here
              *  If success, assign to {@link Deserializer#centralPlace}
              *  Hint: You may use {@link Deserializer#parsePlace(String)}
              */
-
+            line = getFirstNonEmptyLine(reader);
+            if (line != null) {
+                centralPlace = parsePlace(line);
+            } else {
+                throw new InvalidGameException("Unexpected EOF when parsing central place");
+            }
 
             int numPlayers;
             line = getFirstNonEmptyLine(reader);
             if (line != null) {
-                //TODO: get number of players here
+                //TODO: get number of players here-DONE
+                line = line.replace("numPlayers:", "");
+                numPlayers = Integer.parseInt(line);
             } else {
                 throw new InvalidGameException("Unexpected EOF when parsing number of players");
             }
 
 
-            // TODO:
+            // TODO:-DONE
             /**
              * create an array of players {@link Player} with length of numPlayers, and name it by the read-in name
              * Also create an array representing scores {@link Deserializer#storedScores} of players with length of numPlayers
              */
-            Player[] players;
-            // storedScores = new Integer[numPlayers];
+            storedScores = new Integer[numPlayers];
+            String[] tempString;
+            line = getFirstNonEmptyLine(reader);
+            if (line != null) {
+                line = line.replace("name:", "");
+                tempString = line.split("; score:");
+            } else {
+                throw new InvalidGameException("Unexpected EOF when parsing players");
+            }
+            Player firstPlayer = new ConsolePlayer(tempString[0]);
+            storedScores[0] = Integer.parseInt(tempString[1]);
 
-            // TODO
+            line = getFirstNonEmptyLine(reader);
+            if (line != null) {
+                line = line.replace("name:", "");
+                tempString = line.split("; score:");
+            } else {
+                throw new InvalidGameException("Unexpected EOF when parsing players");
+            }
+            Player secondPlayer = new ConsolePlayer(tempString[0]);
+            storedScores[1] = Integer.parseInt(tempString[1]);
+
+            Player[] players = new Player[]{firstPlayer, secondPlayer};
+
+            // TODO-DONE
             /**
              * try to initialize a configuration object  with the above read-in variables
              * if fail, throw InvalidConfigurationError exception
              * if success, assign to {@link Deserializer#configuration}
              */
-
-
-            // TODO
+            try {
+                configuration = new Configuration(size, players, numMovesProtection);
+                configuration.setAllInitialPieces();
+            }catch (InvalidConfigurationError err){
+                throw err;
+            }
+            // TODO-DONE
             /**
              * Parse the string of move records into an array of {@link MoveRecord}
              * Assign to {@link Deserializer#moveRecords}
@@ -110,6 +154,17 @@ public class Deserializer {
              * - {@link Deserializer#parseMove(String)} ()}
              * - {@link Deserializer#parsePlace(String)} ()}
              */
+            line = getFirstNonEmptyLine(reader);
+            if(line == null){
+                throw new InvalidGameException("Unexpected EOF when parsing move record");
+            }
+            while (!line.equals("END")){
+                moveRecords.add(parseMoveRecord(line));
+                line = getFirstNonEmptyLine(reader);
+                if(line == null){
+                    throw new InvalidGameException("Unexpected EOF when parsing move record");
+                }
+            }
 
         } catch (IOException ioe) {
             throw new InvalidGameException(ioe);
@@ -135,8 +190,15 @@ public class Deserializer {
      * @return a {@link MoveRecord}
      */
     private MoveRecord parseMoveRecord(String moveRecordString){
-        // TODO
-        return null;
+        // TODO-DONE
+        moveRecordString = moveRecordString.replace("player:", "");
+        var temp = moveRecordString.split("; ");
+        if(configuration.getPlayers()[0].getName().equals(temp[0])){
+            return new MoveRecord(configuration.getPlayers()[0], parseMove(temp[1]));
+        }else {
+            return new MoveRecord(configuration.getPlayers()[1], parseMove(temp[1]));
+        }
+
     }
 
     /**
@@ -146,8 +208,10 @@ public class Deserializer {
      * @return {@link Move}
      */
     private Move parseMove(String moveString) {
-        // TODO
-        return null;
+        // TODO-DONE
+        moveString = moveString.replace("move:", "").trim();
+        var temp = moveString.split("->");
+        return new Move(parsePlace(temp[0]), parsePlace(temp[1]));
     }
 
     /**
@@ -157,9 +221,11 @@ public class Deserializer {
      * @return {@link Place}
      */
     private Place parsePlace(String placeString) {
-        //TODO
-        return null;
+        //TODO-DONE
+        placeString = placeString.replace("centralPlace:", "");
+        placeString = placeString.replace("(", "");
+        placeString = placeString.replace(")", "");
+        var temp = placeString.split(",");
+        return new Place(Integer.parseInt(temp[0]), Integer.parseInt(temp[1]));
     }
-
-
 }

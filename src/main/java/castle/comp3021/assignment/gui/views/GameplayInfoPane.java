@@ -1,6 +1,10 @@
 package castle.comp3021.assignment.gui.views;
 
 import castle.comp3021.assignment.gui.DurationTimer;
+import castle.comp3021.assignment.gui.views.panes.GamePlayPane;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.StringProperty;
@@ -74,7 +78,12 @@ public class GameplayInfoPane extends BigVBox {
         // TODO-DONE
         score1Label.textProperty().bind(Bindings.concat("Score of player 1: ", score1Property));
         score2Label.textProperty().bind(Bindings.concat("Score of player 2: ", score2Property));
-        timerLabel.textProperty().bind(Bindings.concat("Time: ", ticksElapsed));
+        Timeline t = new Timeline(new KeyFrame(javafx.util.Duration.millis(10), e->{
+            timerLabel.setText("Time: " + formatTime(ticksElapsed.get()));
+        }));
+        t.setCycleCount(Timeline.INDEFINITE);
+        t.play();
+        //timerLabel.textProperty().bind(Bindings.concat("Time: ", countdownFormat(ticksElapsed.get()))));
         curPlayerLabel.textProperty().bind(Bindings.concat("Current player: ", curPlayer));
     }
 }
