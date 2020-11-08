@@ -7,19 +7,13 @@ import castle.comp3021.assignment.gui.views.BigButton;
 import castle.comp3021.assignment.gui.views.BigVBox;
 import castle.comp3021.assignment.gui.views.NumberTextField;
 import castle.comp3021.assignment.gui.views.SideMenuVBox;
-import castle.comp3021.assignment.protocol.Configuration;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
+//import castle.comp3021.assignment.protocol.Configuration;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
@@ -149,8 +143,7 @@ public class SettingPane extends BasePane {
 
             if(o.isEmpty()){
                 returnToMainMenu(true);
-            }
-            else{
+            } else{
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error!");
                 alert.setHeaderText("Validation Failed");
@@ -159,7 +152,9 @@ public class SettingPane extends BasePane {
             }
         });
 
-        returnButton.setOnAction(e->{returnToMainMenu(false);});
+        returnButton.setOnAction(e->{
+            returnToMainMenu(false);
+        });
     }
 
     /**

@@ -1,7 +1,5 @@
 package castle.comp3021.assignment.protocol.io;
 
-import castle.comp3021.assignment.piece.Archer;
-import castle.comp3021.assignment.piece.Knight;
 import castle.comp3021.assignment.player.ConsolePlayer;
 import castle.comp3021.assignment.protocol.*;
 import castle.comp3021.assignment.protocol.exception.InvalidConfigurationError;

@@ -13,11 +13,9 @@ import castle.comp3021.assignment.protocol.Player;
 import castle.comp3021.assignment.protocol.exception.InvalidConfigurationError;
 import castle.comp3021.assignment.protocol.exception.InvalidGameException;
 import castle.comp3021.assignment.protocol.io.Deserializer;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.concurrent.Task;
+//import javafx.concurrent.Task;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -25,7 +23,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import castle.comp3021.assignment.gui.views.BigButton;
@@ -115,13 +112,15 @@ public class ValidationPane extends BasePane{
         });
 
         replayButton.setOnAction(e->{//only active for one time
-            if(isValid.get() == false){
+            if(!isValid.get()){
                 isValid.setValue(true);
                 onClickReplayButton();
             }
         });
 
-        returnButton.setOnAction(e->{ returnToMainMenu(); });
+        returnButton.setOnAction(e->{
+            returnToMainMenu();
+        });
 
     }
 

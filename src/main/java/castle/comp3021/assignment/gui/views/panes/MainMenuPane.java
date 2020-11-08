@@ -1,14 +1,9 @@
 package castle.comp3021.assignment.gui.views.panes;
 
-import castle.comp3021.assignment.gui.ViewConfig;
 import castle.comp3021.assignment.gui.controllers.SceneManager;
-import castle.comp3021.assignment.protocol.Configuration;
 import javafx.application.Platform;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import org.jetbrains.annotations.NotNull;
 import castle.comp3021.assignment.gui.views.BigButton;
@@ -76,7 +71,9 @@ public class MainMenuPane extends BasePane {
             SceneManager.getInstance().showPane(ValidationPane.class);
         });
 
-        quitButton.setOnAction(e->{Platform.exit();});
+        quitButton.setOnAction(e->{
+            Platform.exit();
+        });
     }
 
 }

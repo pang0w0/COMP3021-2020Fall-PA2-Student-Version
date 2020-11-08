@@ -4,11 +4,6 @@ import castle.comp3021.assignment.protocol.exception.ResourceNotFoundException;
 import javafx.scene.image.Image;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;

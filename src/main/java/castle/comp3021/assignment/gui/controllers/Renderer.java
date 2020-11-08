@@ -1,7 +1,6 @@
 package castle.comp3021.assignment.gui.controllers;
 
 import castle.comp3021.assignment.gui.ViewConfig;
-import castle.comp3021.assignment.piece.Knight;
 import castle.comp3021.assignment.protocol.Piece;
 import castle.comp3021.assignment.protocol.Place;
 import javafx.scene.canvas.Canvas;
@@ -91,8 +90,7 @@ public class Renderer {
             for(int j=0;j<boardSize;j++){
                 if((i + j) % 2 == 0){
                     gc.drawImage(lightBoardTile,j * ViewConfig.PIECE_SIZE,i * ViewConfig.PIECE_SIZE);
-                }
-                else{
+                } else{
                     gc.drawImage(darkBoardTile,j * ViewConfig.PIECE_SIZE,i * ViewConfig.PIECE_SIZE);
                 }
                 if(i == centerPlace.x() && j == centerPlace.y()){

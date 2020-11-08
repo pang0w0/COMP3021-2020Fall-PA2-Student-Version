@@ -9,7 +9,6 @@ import castle.comp3021.assignment.gui.views.BigButton;
 import castle.comp3021.assignment.gui.views.BigVBox;
 import castle.comp3021.assignment.gui.views.GameplayInfoPane;
 import castle.comp3021.assignment.gui.views.SideMenuVBox;
-import castle.comp3021.assignment.piece.*;
 import castle.comp3021.assignment.player.ConsolePlayer;
 import castle.comp3021.assignment.player.RandomPlayer;
 import castle.comp3021.assignment.protocol.*;
@@ -18,21 +17,14 @@ import castle.comp3021.assignment.protocol.io.Serializer;
 import javafx.beans.property.*;
 import javafx.geometry.Pos;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
+//import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.time.Duration;
-import java.util.ArrayList;
 import java.util.Optional;
 
 /**
@@ -54,7 +46,7 @@ import java.util.Optional;
  *      - If one player runs out of time of each round {@link DurationTimer#getDefaultEachRound()}, then the player loses the game.
  * Hint:
  *      - You may find it useful to synchronize javafx UI-thread using {@link javafx.application.Platform#runLater}
- */ 
+ */
 
 public class GamePlayPane extends BasePane {
     @NotNull
@@ -182,7 +174,9 @@ public class GamePlayPane extends BasePane {
             startGame();
         });
 
-        restartButton.setOnAction(e->{ onRestartButtonClick(); });
+        restartButton.setOnAction(e->{
+            onRestartButtonClick();
+        });
 
         returnButton.setOnAction(e->{
             doQuitToMenuAction();
@@ -424,8 +418,7 @@ public class GamePlayPane extends BasePane {
                 }
                 globalJeson.movePiece(tempMove);
                 ticksElapsed.set(DurationTimer.getDefaultEachRound());
-            }
-            else {
+            } else {
                 showInvalidMoveMsg("The piece you moved does not belong to you!");
                 return;
             }
@@ -536,9 +529,8 @@ public class GamePlayPane extends BasePane {
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK){
             doQuitToMenu();
-        } else {
-            //cancel and do nothing
         }
+            //cancel and do nothing
     }
 
     /**

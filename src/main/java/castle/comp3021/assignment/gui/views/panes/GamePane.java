@@ -6,16 +6,12 @@ import castle.comp3021.assignment.gui.controllers.SceneManager;
 import castle.comp3021.assignment.gui.views.BigButton;
 import castle.comp3021.assignment.gui.views.BigVBox;
 import castle.comp3021.assignment.gui.views.NumberTextField;
-import castle.comp3021.assignment.piece.Archer;
-import castle.comp3021.assignment.piece.Knight;
 import castle.comp3021.assignment.player.ConsolePlayer;
 import castle.comp3021.assignment.player.RandomPlayer;
 import castle.comp3021.assignment.player.SmartRandomPlayer;
 import castle.comp3021.assignment.protocol.Configuration;
 import castle.comp3021.assignment.protocol.Player;
 import castle.comp3021.assignment.protocol.exception.InvalidConfigurationError;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -45,13 +41,15 @@ public class GamePane extends BasePane {
     private final NumberTextField sizeFiled = new NumberTextField("");
 
 
-    private final BorderPane sizeBox = new BorderPane(null, null, sizeFiled, null, new Label("Size of Board:"));
+    private final BorderPane sizeBox = new BorderPane(null, null,
+            sizeFiled, null, new Label("Size of Board:"));
 
     @NotNull
     private final NumberTextField numMovesProtectionField = new NumberTextField("");
 
     @NotNull
-    private final BorderPane numMovesProtectionBox = new BorderPane(null, null, numMovesProtectionField, null, new Label("Protection Moves:"));
+    private final BorderPane numMovesProtectionBox = new BorderPane(null, null, numMovesProtectionField,
+            null, new Label("Protection Moves:"));
 
 
     private FXJesonMor fxJesonMor = null;
@@ -190,7 +188,9 @@ public class GamePane extends BasePane {
             startGame(fxJesonMor);
         });
 
-        returnButton.setOnAction(e->{SceneManager.getInstance().showPane(MainMenuPane.class);});
+        returnButton.setOnAction(e->{
+            SceneManager.getInstance().showPane(MainMenuPane.class);
+        });
     }
 
     /**

@@ -1,10 +1,6 @@
 package castle.comp3021.assignment.gui;
 
-import castle.comp3021.assignment.gui.controllers.SceneManager;
-import castle.comp3021.assignment.gui.views.panes.GamePlayPane;
 import javafx.application.Platform;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
