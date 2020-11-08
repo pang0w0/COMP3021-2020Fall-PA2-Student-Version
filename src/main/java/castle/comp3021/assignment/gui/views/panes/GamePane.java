@@ -152,7 +152,7 @@ public class GamePane extends BasePane {
 
             if (isHumanPlayer2Button.getText().equals("Player 2: Player")){
                 blackPlayer = new ConsolePlayer("Black");
-            }else if(isHumanPlayer1Button.getText().equals("Player 2: Computer")){
+            }else if(isHumanPlayer2Button.getText().equals("Player 2: Computer")){
                 blackPlayer = new RandomPlayer("Black");
             }else {
                 blackPlayer = new SmartRandomPlayer("Black");
