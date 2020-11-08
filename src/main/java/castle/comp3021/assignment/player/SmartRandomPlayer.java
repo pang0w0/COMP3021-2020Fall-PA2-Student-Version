@@ -38,7 +38,44 @@ public class SmartRandomPlayer extends Player {
     @Override
     public @NotNull Move nextMove(Game game, Move[] availableMoves) {
         //TODO: bonus only
-        int index = new Random().nextInt(availableMoves.length);
-        return availableMoves[index];
+
+        Move fakeMove = new Move(0,0,0,0);
+        Move nearestCentral = fakeMove;
+        Place central = game.getCentralPlace();
+
+        for(var m : availableMoves){
+            Piece p = game.getPiece(m.getSource());
+            if(p.getLabel() == 'K' || p.getLabel() == 'k'){
+                if(m.getSource().equals(central)){
+                    if(game.getConfiguration().getNumMovesProtection() < game.getNumMoves()) {
+                        return m;
+                    }
+                }
+                if(m.getDestination().equals(central)){
+                    return m;
+                }
+                int nearestCentralDistance = Math.abs(nearestCentral.getDestination().x() - central.x()) +
+                        Math.abs(nearestCentral.getDestination().y() - central.y());
+                int currentMoveDistance = Math.abs(m.getDestination().x() - central.x()) +
+                        Math.abs(m.getDestination().y() - central.y());
+
+                if(currentMoveDistance == 3 && !m.getSource().equals(central)){
+                    return m;
+                }
+
+                if(currentMoveDistance < nearestCentralDistance){
+                    if(!m.getSource().equals(central)) {
+                        nearestCentral = m;//get the nearest central move
+                    }
+                }
+            }
+        }
+
+        if(fakeMove.equals(nearestCentral)){
+            int index = new Random().nextInt(availableMoves.length);
+            return availableMoves[index];
+        }else {
+            return nearestCentral;
+        }
     }
 }

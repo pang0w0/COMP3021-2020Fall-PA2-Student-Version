@@ -409,7 +409,7 @@ public class GamePlayPane extends BasePane {
      * @param event mouse release
      */
     private void onCanvasReleased(MouseEvent event){
-        // TODO
+        // TODO-DONE
         //clear the shape first
         globalJeson.renderBoard(gamePlayCanvas);
         Renderer.renderPieces(gamePlayCanvas, globalConfiguration.getInitialBoard());
@@ -583,7 +583,7 @@ public class GamePlayPane extends BasePane {
      *
      */
     private void endGame() {
-        //TODO
+        //TODO-DONE
         globalJeson.stopCountdown();
         historyFiled.setText("");
     }

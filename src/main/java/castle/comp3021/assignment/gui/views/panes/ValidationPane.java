@@ -146,8 +146,13 @@ public class ValidationPane extends BasePane{
                 return false;
             }
             Deserializer de = new Deserializer(file.toPath());
-            try{
+            try {
                 de.parseGame();
+            }catch (InvalidGameException gameException) {
+                showErrorConfiguration(gameException.getMessage());
+                return false;
+            }
+            try {
                 //initialize
                 if(loadedGame != null){
                     loadedGame.stopCountdown();
@@ -160,12 +165,12 @@ public class ValidationPane extends BasePane{
                 return true;
             }catch (InvalidConfigurationError error){
                 showErrorConfiguration(error.getMessage());
+                return false;
             }
         }catch (FileNotFoundException err){
             showErrorMsg();
+            return false;
         }
-
-        return false;
     }
 
     /**

@@ -61,7 +61,7 @@ public class MainMenuPane extends BasePane {
      */
     @Override
     void setCallbacks() {
-        //TODO-DOING
+        //TODO-DONE
         playButton.setOnAction(e->{
             GamePane temp = SceneManager.getInstance().getPane(GamePane.class);
             temp.fillValues();
@@ -69,14 +69,10 @@ public class MainMenuPane extends BasePane {
         });
 
         settingsButton.setOnAction(e->{
-            SettingPane temp = SceneManager.getInstance().getPane(SettingPane.class);
-
             SceneManager.getInstance().showPane(SettingPane.class);
         });
 
         validationButtion.setOnAction(e->{
-            ValidationPane temp = SceneManager.getInstance().getPane(ValidationPane.class);
-
             SceneManager.getInstance().showPane(ValidationPane.class);
         });
 

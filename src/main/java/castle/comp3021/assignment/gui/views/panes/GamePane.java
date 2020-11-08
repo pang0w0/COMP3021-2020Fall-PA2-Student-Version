@@ -10,6 +10,7 @@ import castle.comp3021.assignment.piece.Archer;
 import castle.comp3021.assignment.piece.Knight;
 import castle.comp3021.assignment.player.ConsolePlayer;
 import castle.comp3021.assignment.player.RandomPlayer;
+import castle.comp3021.assignment.player.SmartRandomPlayer;
 import castle.comp3021.assignment.protocol.Configuration;
 import castle.comp3021.assignment.protocol.Player;
 import castle.comp3021.assignment.protocol.exception.InvalidConfigurationError;
@@ -95,7 +96,9 @@ public class GamePane extends BasePane {
         isHumanPlayer1Button.setOnAction(e->{
             if (isHumanPlayer1Button.getText().equals("Player 1: Player")){
                 isHumanPlayer1Button.setText("Player 1: Computer");
-            }else{
+            }else if(isHumanPlayer1Button.getText().equals("Player 1: Computer")){
+                isHumanPlayer1Button.setText("Player 1: Smart Computer");
+            }else {
                 isHumanPlayer1Button.setText("Player 1: Player");
             }
         });
@@ -103,7 +106,9 @@ public class GamePane extends BasePane {
         isHumanPlayer2Button.setOnAction(e->{
             if (isHumanPlayer2Button.getText().equals("Player 2: Player")){
                 isHumanPlayer2Button.setText("Player 2: Computer");
-            }else{
+            }else if(isHumanPlayer2Button.getText().equals("Player 2: Computer")){
+                isHumanPlayer2Button.setText("Player 2: Smart Computer");
+            }else {
                 isHumanPlayer2Button.setText("Player 2: Player");
             }
         });
@@ -138,16 +143,21 @@ public class GamePane extends BasePane {
             Player whitePlayer;
             Player blackPlayer;
 
+            //only able to use smart player in game pane (restart not work)
             if (isHumanPlayer1Button.getText().equals("Player 1: Player")){
                 whitePlayer = new ConsolePlayer("White");
-            }else{
+            }else if(isHumanPlayer1Button.getText().equals("Player 1: Computer")){
                 whitePlayer = new RandomPlayer("White");
+            }else {
+                whitePlayer = new SmartRandomPlayer("White");
             }
 
             if (isHumanPlayer2Button.getText().equals("Player 2: Player")){
                 blackPlayer = new ConsolePlayer("Black");
-            }else{
+            }else if(isHumanPlayer1Button.getText().equals("Player 2: Computer")){
                 blackPlayer = new RandomPlayer("Black");
+            }else {
+                blackPlayer = new SmartRandomPlayer("Black");
             }
 
             Player[] players = new Player[]{whitePlayer, blackPlayer};

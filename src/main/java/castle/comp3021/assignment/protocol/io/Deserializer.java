@@ -50,8 +50,14 @@ public class Deserializer {
     private String getFirstNonEmptyLine(@NotNull final BufferedReader br) throws IOException {
         // TODO-DONE
         String s = br.readLine();
-        while(s.equals("") || s.charAt(0) == '#'){
+        if(s == null){
+            throw new IOException("fail to read a line");
+        }
+        while (s.equals("") || s.charAt(0) == '#') {
             s = br.readLine();
+            if(s == null){
+                throw new InvalidGameException("unexpected end of file");
+            }
         }
         return s;
     }
@@ -64,8 +70,12 @@ public class Deserializer {
             line = getFirstNonEmptyLine(reader);
             if (line != null) {
                 // TODO: get size here-DONE
-                line = line.replace("size:", "");
-                size = Integer.parseInt(line);
+                try {
+                    line = line.replace("size:", "");
+                    size = Integer.parseInt(line);
+                }catch (NumberFormatException ex){
+                    throw new InvalidGameException("Unexpected EOF when parsing number of board size");
+                }
             } else {
                 throw new InvalidGameException("Unexpected EOF when parsing number of board size");
             }
